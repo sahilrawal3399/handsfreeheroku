@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Admin | {{name}}</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <!-- Google Font: Source Sans Pro -->
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+      <!-- Tostar  -->
+      <link href="/css/toastr.css" rel="stylesheet"/>
+      <!-- Font Awesome -->
+      <link rel="stylesheet" href="/admin/plugins/fontawesome-free/css/all.min.css">
+      <!-- Ionicons -->
+      <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+      <!-- Tempusdominus Bootstrap 4 -->
+      <link rel="stylesheet" href="/admin/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+      <!-- iCheck -->
+      <link rel="stylesheet" href="/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+      <!-- JQVMap -->
+      <link rel="stylesheet" href="/admin/plugins/jqvmap/jqvmap.min.css">
+      <!-- Theme style -->
+      <link rel="stylesheet" href="/admin/dist/css/adminlte.min.css">
+      <!-- overlayScrollbars -->
+      <link rel="stylesheet" href="/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+      <!-- Daterange picker -->
+      <link rel="stylesheet" href="/admin/plugins/daterangepicker/daterangepicker.css">
+      <!-- summernote -->
+      <link rel="stylesheet" href="/admin/plugins/summernote/summernote-bs4.min.css">
+   </head>
+   <body class="hold-transition sidebar-mini layout-fixed">
+      <div class="wrapper">
+         <!-- Preloader -->
+         <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="/admin/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+         </div>
+         <!-- Navbar -->
+         {% include '../templates/header.njk' %}
+         <!-- /.navbar -->
+         <!-- Main Sidebar Container -->
+         {% include '../templates/sidemenu.njk' %}
+         <div class="content-wrapper" style="min-height: 1302.4px;">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+               <div class="container-fluid">
+                  <div class="row mb-2">
+                     <div class="col-sm-6">
+                        <h1>Edit Question</h1>
+                     </div>
+                     <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                           <li class="breadcrumb-item"><a href="/admin/survey">Home</a></li>
+                           <li class="breadcrumb-item active">Edit Question</li>
+                        </ol>
+                     </div>
+                  </div>
+               </div>
+               <!-- /.container-fluid -->
+            </section>
+            <!-- Main content -->
+            <section class="content">
+               <div class="container-fluid">
+                  <div class="row">
+                     <div class="col-12">
+                        <div class="card">
+                           <!-- /.card-header -->
+                           <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                        <div class="card">
+                           <div class="card-header">
+                              <h3 class="card-title">Edit Question</h3>
+                           </div>
+                           <!-- /.card-header -->
+                           <form class="form-horizontal">
+                              <div class="card-body">
+                                 <div class="form-group row">
+                                    <label for="questionTitle" class="col-sm-2 col-form-label">Survey</label>
+                                    <div class="col-sm-10">
+                                       <select class="form-control" id="surveyId">
+                                          
+                                          {% for survey in surveylist %}
+                                            <option value="{{survey._id}}" {% if (survey._id | string == question.surveyId | string) %} selected {% else %} {% endif %}>{{survey.surveyName}}</option>
+                                          {% endfor %} 
+                                       </select>
+                                    </div>
+                                 </div>
+                                 <div class="form-group row">
+                                    <label for="question" class="col-sm-2 col-form-label">Question</label>
+                                    <div class="col-sm-10">
+                                       <input type="text" class="form-control" id="question" value="{{question.question}}">
+                                    </div>
+                                 </div>
+                                 <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Answer Type</label>
+                                    <div class="col-sm-10">
+                                       <div class="form-group">
+                                        {% set text = "text" %}
+                                        {% set option = "option" %}
+                                          <select class="form-control" id="answerTypeSelect">
+                                             <option {% if (question.answerType == text ) %} selected {% else %} {% endif %} value="text">Text</option>
+                                             <option {% if (question.answerType == option ) %} selected {% else %} {% endif %} value="option">Option</option>
+                                          </select>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <!-- Dynamic HTML -->
+                                 <div id="answerTypeOptionHtml">
+                                 </div>
+                                 <div id="parentAva">
+                                    <p><b>Is Parent Available:</b>&nbsp;&nbsp;
+                                       <input type="radio" id="yes" name="parent" value="yes" {% if (question.parent == true) %} checked {% else %} {% endif %} required><label for="yes">YES</label>&nbsp;         
+                                       <input type="radio" id="no" name="parent" value="no" {% if (question.parent == false) %} checked {% else %} {% endif %}><label for="no">NO</label>
+                                    </p>
+                                    <div id="parentAvailable"></div>
+                                 </div>
+                                 <span id="questionParentId" data-value="{{question.parentQueId}}"></span>
+                                 <span id="answerType" data-value="{{question.answerType}}"></span>
+                              </div>
+                              <!-- /.card-body -->
+                              <div class="card-footer">
+                                 <button type="button" id="submitBtn" class="btn btn-info">Submit</button>
+                                 <button type="button" id="cancelbtn" class="btn btn-default float-right">Cancel</button>
+                              </div>
+                              <!-- /.card-footer -->
+                           </form>
+                           <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                     </div>
+                     <!-- /.col -->
+                  </div>
+                  <!-- /.row -->
+               </div>
+               <!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+         </div>
+         {% include '../templates/footer.njk' %}
+         <!-- Control Sidebar -->
+         <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+         </aside>
+         <!-- /.control-sidebar -->
+      </div>
+      <!-- ./wrapper -->
+      <!-- Toastr JS -->
+      <script src="/js/toastr.js"></script>  
+      <!-- jQuery -->
+      <script src="/admin/plugins/jquery/jquery.min.js"></script>
+      <!-- jQuery UI 1.11.4 -->
+      <script src="/admin/plugins/jquery-ui/jquery-ui.min.js"></script>
+      <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+      <script>
+         $.widget.bridge('uibutton', $.ui.button)
+      </script>
+      <!-- Bootstrap 4 -->
+      <script src="/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+      <!-- ChartJS -->
+      <script src="/admin/plugins/chart.js/Chart.min.js"></script>
+      <!-- Sparkline -->
+      <script src="/admin/plugins/sparklines/sparkline.js"></script>
+      <!-- JQVMap -->
+      <script src="/admin/plugins/jqvmap/jquery.vmap.min.js"></script>
+      <script src="/admin/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+      <!-- jQuery Knob Chart -->
+      <script src="/admin/plugins/jquery-knob/jquery.knob.min.js"></script>
+      <!-- daterangepicker -->
+      <script src="/admin/plugins/moment/moment.min.js"></script>
+      <script src="/admin/plugins/daterangepicker/daterangepicker.js"></script>
+      <!-- Tempusdominus Bootstrap 4 -->
+      <script src="/admin/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+      <!-- Summernote -->
+      <script src="/admin/plugins/summernote/summernote-bs4.min.js"></script>
+      <!-- overlayScrollbars -->
+      <script src="/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+      <!-- AdminLTE App -->
+      <script src="/admin/dist/js/adminlte.js"></script>
+      <!-- AdminLTE for demo purposes -->
+      <script src="/admin/dist/js/demo.js"></script>
+      <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+      <script src="/admin/dist/js/pages/dashboard.js"></script>
+      <!-- [ Question Script ] -->
+      <script>
+         //[ Cancel BTN ]
+         $('body').on('click','#cancelbtn',function(){
+            toastr.error('Question Not Updated!!');
+                         setTimeout(function(){
+                             window.location.replace('/admin/question/queList');
+                         },1000);
+         });
+         // [ Onload ]
+         // [ onChange Function ]
+
+         let checked = '';
+         let parent = ``;
+         let parentOP = '';
+         let options = '';
+         let parentOptiondiv =``;
+         let parentOption = '{{question.parentOption}}';
+         let parentVal = '{{question.parent}}';
+         let check = '';
+         let parentOptionVal = '';
+
+         let onchange = function(){
+                console.log('On Change Function Has Been Called ')
+                $('#parentOptionDiv').html("");
+
+                  let _id = parentOP; 
+                  $.ajax({
+                         url: "/api/getQueData/"+_id+"",
+                         method: "GET",
+                         success: function(resp){
+                          if(resp.getQueData.options != null){
+
+                            parentOptiondiv = `<b>Parent Option</b>`;
+                            $('#parentOptionDiv').html(parentOptiondiv);
+
+                          for(let i=0; i < resp.getQueData.options.length; i++){
+
+                            parentOptiondiv = `<div class="form-group row opCls">
+                                                <div class="col-sm-4">
+                                                   <input type="radio" id="option`+i+`" name="parentOptionP" value="`+resp.getQueData.options[i]+`" required><label for="option`+i+`">`+resp.getQueData.options[i]+`</label> 
+                                                </div>
+                                         </div>`;
+                           $('#parentOptionDiv').append(parentOptiondiv);
+
+                          }
+                          $('input[type=radio][name=parentOptionP]').change(function() {
+                          parentOptionVal = this.value;
+                          });
+                         }
+                        }
+                  });
+         }
+         
+         // [ Let Html For Option Add Button ]
+         let html = ``;
+         let objNewDiv=``;
+         let intTextBox = 0;
+
+         // [ Checking AnswerType is Option Or Text ]
+         let answerType = $('#answerType').attr('data-value');
+
+          // [ On Load Checking for OPtions ]
+          if(answerType == 'option'){
+
+           html =`<div class="form-group row">
+                         <button type="button" onclick="addElement();" class="btn btn-info float-right">Add
+                         </button>
+                  </div>`;
+               $('#answerTypeOptionHtml').html(html);   
+
+          let _id = '{{question._id}}';
+          // [ AJAX for fetching question details ]
+          $.ajax({
+             url: "/api/getQueData/"+_id+"",
+             method: "GET",
+             success: function(resp){
+              for(let i=0; i < resp.getQueData.options.length; i++){
+
+                objNewDiv = `<div class="form-group row opCls">
+                                    <div class="col-sm-4">
+                                       <input type="text" id="optionTitle_` + i + `" name="optionTitle_` + i + `" class="form-control optionTitleClass"   value = "`+resp.getQueData.options[i]+`">
+                                    </div>
+                                    <button type="button"  class="btn btn-info removeBtn float-right">Remove
+                                    </button>
+                             </div>`;
+               $('#answerTypeOptionHtml').append(objNewDiv);
+
+              }
+              intTextBox = resp.getQueData.options.length - 1 ;
+              console.log('intTextBox in the loop ',intTextBox);
+             }
+            });
+                      
+          }else{
+               intTextBox = 0;
+               $('#answerTypeOptionHtml').html("");
+          }
+
+
+         // sss
+         
+         let op = 'no';
+         
+         // [ Change Op - Sel - Op ]
+         $('#answerTypeSelect').on('change', function() {
+            
+            let opVal = $(this).val();
+            console.log("opVal",opVal);
+           
+            if(opVal == 'option'){
+              // [ Add Button ]
+               html =`<div class="form-group row">
+                         <button type="button" onclick="addElement();" class="btn btn-info float-right">Add
+                         </button>
+                       </div>`;
+               $('#answerTypeOptionHtml').html(html);
+
+            }
+            else {
+               // sss
+               intTextBox = 0;
+               $('#answerTypeOptionHtml').html("");
+            }
+         });
+         
+         
+         // [ Op - Change - Add ]
+         function addElement() {
+            
+            if(intTextBox <= 3 ){
+               
+                objNewDiv = `<div class="form-group row opCls">
+                                    <div class="col-sm-4">
+                                       <input type="text" id="optionTitle_` + intTextBox + `" class="form-control optionTitleClass" name="optionTitle_` + intTextBox + `"  placeholder="Enter Title For Option ">
+                                    </div>
+                                    <button type="button"  class="btn btn-info removeBtn float-right">Remove
+                                    </button>
+                             </div>`;
+               $('#answerTypeOptionHtml').append(objNewDiv);
+               intTextBox++;
+            }
+         }
+         
+         // [ Op - Change - Remove ]
+         $('body').on('click','.removeBtn',function(){
+            $(this).parent('.opCls').remove();
+            intTextBox--;
+         });
+
+         // [ Fetching All Questions Using Ajax ]
+         let parentQuestionId = $('#questionParentId').attr('data-value');
+
+         
+
+          $.ajax({
+             url: "/admin/question/getAllQuestions",
+             method: "GET",
+             success: function(resp){
+
+                parent = `<select class="form-control" id="parentOption">`;
+
+                for(let i=0 ; i < resp.queData.length ; i++ ){
+
+                  if (String(resp.queData[i]._id) == String(parentQuestionId)) {
+                      checked = "selected";
+                      if (resp.queData[i].options != null) {
+                        options = resp.queData[i].options;
+                        console.log('options', options);
+                      }
+                  }
+                  else {
+                       checked = "";
+                  }
+
+                  parent += `<option  value="`+resp.queData[i]._id+`" `+checked+`>`+resp.queData[i].question+`</option>`;
+
+                }
+                parent += `</select>
+                <div id="parentOptionDiv"></div>`;
+
+
+                if(parentVal == 'true'){
+                  
+                  op = 'yes';
+                  $('#parentAvailable').html(parent);
+
+                  if(parentOption != ''){
+                    
+                    $('#parentOptionDiv').html("");
+
+                    for(let i=0; i < options.length; i++){
+                      if (parentOption == options[i]['option_'+i]) {
+                        check = 'checked';
+                      }
+                      console.log('check : ', check);
+
+                      parentOptiondiv = `<div class="form-group row opCls">
+                                                <div class="col-sm-4">
+                                                   <input type="radio" id="option_`+i+`" name="parentOptionP" value="`+options[i][`option_`+i]+`"  required `+check+`><label for="option_`+i+`">`+options[i][`option_`+i]+`</label> 
+                                                </div>
+                                         </div>`;
+                      $('#parentOptionDiv').append(parentOptiondiv);
+                    }
+                     $('input[type=radio][name=parentOptionP]').change(function() {
+                          parentOptionVal = this.value;
+                     });
+                  }
+                }
+                // [ Parent ID on Change ]
+                
+              $('#parentOption').on('change', function() {
+
+                  parentOP = $(this).val();
+                  console.log("parentOP",parentOP);
+                  onchange();
+              });
+
+             }
+          });
+
+         
+         
+         // [ Parent Availability ]
+         $('input[type=radio][name=parent]').change(function() {          
+            
+                     
+            console.log('this.value: ',this.value);
+
+            if (this.value == 'yes') {
+               op = this.value;
+               $('#parentAvailable').html(parent);
+               
+               
+              // [ Parent ID on Change ]
+              $('#parentOption').on('change', function() {
+                
+                parentOP = $(this).val();
+                console.log("parentOP after",parentOP);
+                onchange();
+              });
+           
+           } 
+           else if(this.value == 'no'){
+            op = 'no';
+              $('#parentAvailable').html("");
+           }
+         });
+         
+         // [ Survey ID On Change ]
+         $('#surveyId').on('change', function() {
+            
+            let surveyid = $(this).val();
+            console.log("surveyid",surveyid);
+          });
+         
+         
+         // [ Submit ]
+         $('body').on('click', '#submitBtn', function(){
+               let _id = '{{question._id}}'
+               let question = $('#question').val();
+               let opvl = $('#answerTypeSelect').val();
+               let parent = op;                
+         
+               let parentOP = $('#parentOption').val();
+               let surveyId = $('#surveyId').val();
+               let reqJson = {
+                  question : question,
+                  answerType : opvl,
+                  parent : parent,
+                  surveyId : surveyId,
+                  answerOptionCount: intTextBox,
+                  _id : _id
+               }
+         
+               if(reqJson.parent == 'yes'){
+                  reqJson.parentQueId = parentOP ;
+                   if(parentOptionVal != null){
+                    reqJson.parentOption = parentOptionVal;
+                  }
+               }
+               if(reqJson.answerType == 'option'){
+
+                // [ To get option value i have to use loop using IntTextBox ]
+                let opObj = [];
+                console.log('test');
+
+                $(".opCls").each(function(){
+                  let optionValue = $(this).find('.optionTitleClass').val();
+                  opObj.push(optionValue);
+                });
+                
+                reqJson.option = opObj;
+               }
+               console.log('reqJson',reqJson);
+              $.ajax({
+                 url: "/admin/question/editQue/:id",
+                 method: "POST",
+                 data: reqJson,
+                 success: function(resp){
+                     console.log('Response Data: ',resp);
+                     if(resp.status == 'success'){
+                         toastr.success(resp.message);
+                         setTimeout(function(){
+                             window.location.replace('/admin/question/queList');
+                         },1000);
+                     }
+                     else {
+                         toastr.error(resp.message);
+                     }
+                 }
+              });
+               });
+      </script>
+   </body>
+</html>

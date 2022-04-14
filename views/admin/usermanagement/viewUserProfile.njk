@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User Management | {{name}}</title>
+    <link rel="stylesheet" type="text/css" href="/css/userprofile.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="js/userprofile.js"></script> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="/css/toastr.css" rel="stylesheet"/>
+    <!-- Link Files Include -->
+    {% include '../templates/link.njk' %}
+  </head>
+  <body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+      <!-- Preloader -->
+      <div class="preloader flex-column justify-content-center align-items-center">
+        <img class="animation__shake" src="/admin/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+      </div>
+      <!-- Navbar -->
+      {% include '../templates/header.njk' %}
+      <!-- /.navbar -->
+      <!-- Main Sidebar Container -->
+      {% include '../templates/sidemenu.njk' %}
+      <!-- leaderboard start -->
+      <div class="content-wrapper" style="min-height: 1302.4px;">
+        <div class="card">
+          <!-- /.card-header -->
+          <div class="card-body">
+            <div class="container">
+              <div class="main-body">
+                <div class="row gutters-sm">
+                  <div class="col-md-4 mb-3">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                          <div class="avatar-upload">
+                            <div class="avatar-edit">
+                              <form name="photo" id="imageUploadForm" enctype="multipart/form-data" action="/uploadPhoto" method="post">
+                                <input type="file" id="myImage" name="myImage" accept=".png, .jpg, .jpeg">
+                                <label for="myImage"></label>
+                              </form>
+                            </div>
+                            <div class="avatar-preview">
+                              <div id="imagePreview" style="background-image: url(/profile/{{user.imgsrc}});">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mt-3">
+                            
+                            <div style="font-size: 20px;">{{user.name}}</div>
+                           <div class="d-flex justify-content-between align-items-center mt-4 px-4">
+                          <div class="stats">
+                              <h6 class="mb-0">Followers</h6> <span>{{user.followers}}</span>
+                          </div>
+                          <div class="stats">
+                              <h6 class="mb-0">Following</h6> <span>{{user.following}}</span>
+                          </div>
+                
+                          </div>
+                            
+                            <div class="card mt-3">
+                              <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                  <h6 class="mb-0">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline">
+                                      <circle cx="12" cy="12" r="10"></circle>
+                                      <line x1="2" y1="12" x2="22" y2="12"></line>
+                                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                    </svg>
+                                    Website
+                                  </h6>
+                                  <span class="text-secondary">https://bootdey.com</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                  <h6 class="mb-0">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github mr-2 icon-inline">
+                                      <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                                    </svg>
+                                    Github
+                                  </h6>
+                                  <span class="text-secondary">bootdey</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                  <h6 class="mb-0">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter mr-2 icon-inline text-info">
+                                      <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                                    </svg>
+                                    Twitter
+                                  </h6>
+                                  <span class="text-secondary">@bootdey</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                  <h6 class="mb-0">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram mr-2 icon-inline text-danger">
+                                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                    </svg>
+                                    Instagram
+                                  </h6>
+                                  <span class="text-secondary">bootdey</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                  <h6 class="mb-0">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook mr-2 icon-inline text-primary">
+                                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                                    </svg>
+                                    Facebook
+                                  </h6>
+                                  <span class="text-secondary">bootdey</span>
+                                </li>             
+                              </ul>
+                              <button id="back" type="button" class="btn btn-dark">Go Back</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card mb-3">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h6 class="mb-0">Name</h6>
+                          </div>
+                          <div id="nameOnEdit" class="col-sm-9 text-secondary">
+                            {{user.name}}
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h6 class="mb-0">Username</h6>
+                          </div>
+                          <div id="userNameOnEdit" class="col-sm-9 text-secondary">
+                            {{user.username}}
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h6 class="mb-0">Email-Id</h6>
+                          </div>
+                          <div class="col-sm-9 text-secondary">
+                            {{user.email}}
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h6 class="mb-0">Password</h6>
+                          </div>
+                          <div id="passwordOnEdit" class="col-sm-9 text-secondary">
+                            {{user.password}}
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h6 class="mb-0"> Verified</h6>
+                          </div>
+                          <div class="col-sm-9 text-secondary">
+                            {{user.isVerified}}
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h6 class="mb-0"> Survey's Attended</h6>
+                          </div>
+                          <div class="col-sm-9 text-secondary">
+                            {{user.surveyAttend}}
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h6 class="mb-0">Points</h6>
+                          </div>
+                          <div class="col-sm-9 text-secondary">
+                            {{user.points}}
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <div id="saveCancelBtn" class="col-sm-12">
+                            <button class="btn btn-primary" id="userEdit"><i class="fas fa-user-edit"></i> Edit</button>
+                            <span id="userBlockButton"></span>
+                            
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.card-body -->
+        </div>
+      </div>
+      <!-- leaderboard ends -->
+      {% include '../templates/footer.njk' %}
+      <!-- Control Sidebar -->
+      <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+      </aside>
+      <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+    <!-- Script Files Include -->
+    {% include '../templates/script.njk' %}
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-1b93190375e9ccc259df3a57c1abc0e64599724ae30d7ea4c6877eb615f89387.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/js/toastr.js"></script>
+    <script>
+      $("#back").on("click",()=>{
+        setTimeout(()=>{
+          window.location.replace("/admin/userManagement")
+        },1000)
+      })
+
+      let currentUsername = '{{user.username}}';
+      let saveCancel =`
+      <button class="btn btn-primary" id="userSave">Save</button>
+      <button class="btn btn-primary" id="userCancel">Cancel</button>`;
+
+      let nameSection =`
+      <input type="text" id="name" name="name" value="{{user.name}}">`;
+      
+      let userNameSection =`
+      <input type="text" id="username" name="username" value="{{user.username}}">
+      <span id="lblMsg2" style="color:green"></span><span id="lblMsg" style=" color:red;"></span>`;
+
+      let passwordSection =`
+      <input type="text" id="password" name="password" value="{{user.password}}">`;
+      
+      // [ Nothing Updated ]
+      $('#userEdit').on('click' , function(){
+        $('#nameOnEdit').html(nameSection);
+        $('#userNameOnEdit').html(userNameSection);
+        $('#passwordOnEdit').html(passwordSection);
+        $('#saveCancelBtn').html(saveCancel);
+      
+        $('#userCancel').on('click' , function(){
+        toastr.error('Nothing Updated');
+        setTimeout(function(){
+        location.reload();   
+        },1000);
+        
+      });
+      
+      
+      
+        let word = '';
+        let userValidated = false;
+      
+        let userValidation = function(){
+          word = document.getElementById("username").value;
+              if (currentUsername != word) {              
+                // [ AJAX For checking Username Availability ]
+                $.ajax({
+                    url: "/api/userValidation",
+                    method: "POST",
+                    data : {
+                        username : word
+                    },
+                    success: function(resp){
+                    
+                    if(resp.status == 'success'){
+                        userValidated = true;
+                        $('#lblMsg2').html('');
+                        $('#lblMsg').html('');
+                        $('#lblMsg2').html(resp.message);
+                    }
+                    else {
+                        userValidated = false;
+                        $('#lblMsg').html('');
+                        $('#lblMsg2').html('');
+                        $('#lblMsg').html(resp.message);
+                    }
+                }
+                });  
+              }else{
+                userValidated = true;
+              }
+        };
+        
+        // [ On Keypress Event For Username ]
+      
+        $("#username").on("paste keypress", function() {
+         
+         let regexprn = new RegExp("^[a-zA-Z0-9_.]+$");
+         let key = String.fromCharCode(event.charCode ? event.which : event.charCode);
+         
+         if (!regexprn.test(key)) {
+                $('#lblMsg2').html('');
+                $('#lblMsg').html('');
+                event.preventDefault();
+                $('#lblMsg').html('Sepecial characters and spaces are not allowed.');
+                return false;
+         }else {
+               $('#lblMsg').html('');
+               $('#lblMsg2').html('');
+               setTimeout(function(){ 
+               word = document.getElementById("username").value;
+               
+               if(word.length >=8){
+               userValidation();
+               }else{
+                $('#lblMsg').html('Username must contain atleast 8 characters!!');
+               }
+               },10);                   
+      
+         }
+        });
+      
+      
+      
+      
+        // [ Updating Details ]
+        $('#userSave').on('click' , function(){
+          word = document.getElementById("username").value;
+        if (word.length >= 8) {
+        userValidation();
+      
+        setTimeout(function(){
+        if (userValidated) {
+        let _id = '{{user._id}}';
+        let name = $('#name').val();
+        let username = $('#username').val();
+        let password = $('#password').val();
+             $.ajax({
+                 url: "/admin/userManagement/viewUserProfile/"+_id,
+                 method: "POST",
+                 data: {
+                     name: name,
+                     username: username,
+                     password : password
+                 },
+                 success: function(resp){
+                    console.log('Response Data: ',resp);
+                    if(resp.status == 'success'){
+                        toastr.success(resp.message);
+                        setTimeout(function(){
+                            location.reload();
+                        },1000);
+                    }
+                    else {
+                        toastr.error(resp.message);
+                    }
+                }
+             });
+         }
+         },500);
+      }else{
+        $('#lblMsg2').html('');
+        $('#lblMsg').html('');
+        $('#lblMsg').html('Username must contain atleast 8 characters!!');
+      }  
+        });
+      
+      
+      });
+
+
+// [ User Blockig And Unblocking Button ]
+let userBlockButton = ``;
+let userBlock = '{{user.isBlock}}';
+
+   if (userBlock == 'true') {
+    $('#userBlockButton').html('');
+   userBlockButton =`<button data-id = "{{user._id}}" class="btn btn-success blockBtn" title="Unblock User" value= "false"><i class="fas fa-check-circle"></i> Unblock User</button>`;
+   $('#userBlockButton').html(userBlockButton);
+   }else{
+    $('#userBlockButton').html('');
+    userBlockButton =`<button data-id = "{{user._id}}" class="btn btn-danger blockBtn" title="Block User" value= "true"><i class="fas fa-ban"></i> Block User</button>`;
+    $('#userBlockButton').html(userBlockButton);
+   }
+
+      $('body').on('click','.blockBtn',function(){
+      let userId = $(this).attr("data-id");
+      let btnValue = $(this).attr("value");
+      
+      $.ajax({
+         url: "/api/userBlock/"+userId,
+         method: "POST",
+         data:{
+          btnValue : btnValue
+         },
+         success: function(resp){
+          if(resp.status == 'success'){
+            toastr.success(resp.message);
+            setTimeout(function(){
+                            location.reload();
+                        },1000);
+          }else{
+            toastr.error(resp.message);
+          }
+         }
+      });
+
+      });
+      
+    </script>
+    <!--  [ Image Upload Script ] -->
+    <script id="rendered-js">
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          
+          var formData = new FormData(document.getElementById("imageUploadForm"));
+          console.log('formData: ',formData);
+          $.ajax({
+                type:'POST',
+                url: '/uploadPhoto',
+                data:formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                success:function(data){
+                    toastr.success(data.message);
+                         setTimeout(function(){
+                                 location.reload();
+                             },1000);
+                },
+                error: function(data){
+                    toastr.success(data.message);
+                }
+            });
+          
+          reader.onload = function (e) {
+            $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+            $('#imagePreview').hide();
+            $('#imagePreview').fadeIn(650);
+          };
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+      $("#myImage").change(function () {
+        readURL(this);
+      });
+          
+    </script>
+  </body>
+</html>

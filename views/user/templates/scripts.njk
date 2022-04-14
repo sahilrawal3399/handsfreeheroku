@@ -1,0 +1,31 @@
+<!-- Vendor JS Files -->
+  <script src="/homepage/vendor/aos/aos.js"></script>
+  <script src="/homepage/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/homepage/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/homepage/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/homepage/vendor/php-email-form/validate.js"></script>
+  <script src="/homepage/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/homepage/vendor/waypoints/noframework.waypoints.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="/homepage/js/main.js"></script>
+
+  <!-- Script For LogOut  -->
+<script>
+    // [ Log Out Section ]
+    $('body').on('click', '#logOut', function(){
+            console.log("Button Clicked")
+            $.ajax({
+                url: "/logout",
+                method: "GET",
+                success: function(resp){
+                        // toastr.success("Log Out Successfully");
+                        setTimeout(function(){
+                            window.location.replace('/');
+                        },1000);
+                   
+                }
+            });
+            
+          });
+</script>

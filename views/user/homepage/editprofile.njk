@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Edit Profile | {{name}} </title>
+      <link rel="stylesheet" type="text/css" href="css/editprofile.css">
+      <link href="/css/toastr.css" rel="stylesheet"/>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   </head>
+   <body>
+      <center>
+         <div class="box">
+           <!--  <input type="file" id="file" name="image" >
+            <img src="" width="100%" height="100%">
+            <label for="file">Change Photo</label> -->
+            <div class="profile-upload">
+                <div class="circle" style="margin-top: 15px; margin-bottom: 10px;">
+                	<img class="profile-pic" src="" alt="">
+                </div>
+                
+            </div>
+            <label for="editfile">Edit Profile Picture</label>
+            <i class="flava-edit upload-button"></i>
+            <input style="display:none;" id="editfile" class="file-upload updateAvatar" type="file" name="uploadimage" value="Edit Value" accept="image/*">
+            <h3 style="color:white" id="userName">Current User Name {{user.name}}</h3>
+            <input type="text" id="chUser" placeholder="Change User Name" name="" >
+            <input type="text" id="chPass" placeholder="Change Password" name="" >
+            <!-- <h3 style="color:white" id="userName">Current User Name {{user.name}}</h3> -->
+            <input type="text" placeholder="Change Date of Birth" name="">
+            <input type="text" name="" placeholder="Gender">
+            <button id="cancel" style="float: left;margin: 10px 0 0 18.2%;">CANCEL</button>
+            <button
+               name="done" id="edit" style="float: right;margin:10px 18.2% 0 0;">DONE</button>
+         </div>
+      </center>
+                     <!--  <div class="p-image">
+                    
+                </div> -->
+      <script src="/js/toastr.js"></script>
+      <script>
+         
+      	let readURL = function(input) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.profile-pic').attr('src', e.target.result);
+                }
+        
+                reader.readAsDataURL(input.files[0]);
+                
+            }                
+        }
+
+        $(document).on("change", ".updateAvatar", function() {   // If you want to upload without a submit button 
+
+	        let file_data = $(".updateAvatar").prop("files")[0]; // Getting the properties of file from file field
+	        console.log('file_data: ',file_data);
+            console.log('file_data.name', file_data.name);
+            var imgName = file_data.name;
+
+	        let ext = file_data.name.split('.').pop();
+
+	        console.log('ext: ',ext);
+	        
+	        if(ext == "jpg" || ext == "jpeg" || ext == "png"){
+	            var form_data = new FormData(); // Creating object of FormData class
+	            
+	            console.log('form_data: ',form_data);
+
+	            form_data.append("media", file_data)
+	            form_data.append("file", file_data)
+	            form_data.append("type", 'photo')
+	            form_data.append("isProfile", 1)
+	            form_data.append("isLive", 0)
+
+	            console.log('form_data2: ',form_data);
+	            console.log('form_data2 isProfile: ',form_data.isProfile);
+
+                $.ajax({
+                    url: "/uploadPhoto",
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    processData:false,
+                    contentType:false,
+                    // headers: { 'token': token },
+                    data: form_data,
+                    dataType:'json',
+                    success: function (result) {
+                        if (result.status == 'success'){
+                            toastr.success("Uploaded Successfully..");
+                        } else {
+                            toastr.error("Something went wrong.","Error");
+                        }
+                    }
+                });
+
+	           
+                // [ Image Post]
+                console.log("imgName",imgName);
+                
+                $.ajax({
+                 url: "/editprofile",
+                 method: "POST",
+                 data: {
+                     imgsrc:imgName,
+                     // email: 'sahil@rawal.com'
+                     // password: password
+                 },
+                 success: function(resp){
+                    console.log('Response Data: ',resp);
+                    if(resp.status == 'success'){
+                        toastr.success(resp.message);
+                    }
+                    else {
+                        toastr.error(resp.message);
+                    }
+                }
+             });
+
+	        }else{
+	            
+	            toastr.error('File format must be jpg, jpeg or png',"Error");
+	        }
+	    });
+
+      	// $(".upload-button").on('click', function () {
+       //      $(".file-upload").click();
+       //  });
+
+      	$(".file-upload").on('change', function () {
+            readURL(this);
+        });
+
+         $('body').on('click', '#edit', function(){
+             
+             let name = $('#chUser').val();
+             let password = $('#chPass').val();
+             console.log("Typeofname",typeof name);
+             console.log("Typeofpassword",typeof password);
+             console.log("name",name);
+             console.log("password",password);
+             $.ajax({
+                 url: "/editprofile",
+                 method: "POST",
+                 data: {
+                     name: name,
+                     password: password
+                 },
+                 success: function(resp){
+                    console.log('Response Data: ',resp);
+                    if(resp.status == 'success'){
+                        toastr.success(resp.message);
+                        setTimeout(function(){
+                            window.location.replace('/homepage');
+                        },1000);
+                    }
+                    else {
+                        toastr.error(resp.message);
+                    }
+                }
+             });
+             
+         });
+
+         // [ Cancel Button ]
+         $('body').on('click', '#cancel', function(){
+            toastr.error("Nothing Updated!!");
+            setTimeout(function(){
+                            window.location.replace('/homepage');
+                        },1000);
+         });
+             
+         
+      </script>
+   </body>
+</html>

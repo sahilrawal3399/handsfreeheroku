@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>User Management | {{name}}</title>
+      
+      <!-- Link Files Include -->
+      {% include '../templates/link.njk' %}
+
+   </head>
+   <body class="hold-transition sidebar-mini layout-fixed">
+      <div class="wrapper">
+         <!-- Preloader -->
+         <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="/admin/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+         </div>
+         <!-- Navbar -->
+         {% include '../templates/header.njk' %}
+         <!-- /.navbar -->
+         <!-- Main Sidebar Container -->
+         {% include '../templates/sidemenu.njk' %}
+
+         <!-- leaderboard start -->
+         <div class="content-wrapper" style="min-height: 1302.4px;">
+         <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">{{name}} User Management</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="myTable" class="table table-bordered">
+                  
+                  <thead>
+                      <tr>
+                          <th>Sr.no</th>
+                          <th>Name</th>
+                          <th>User Name</th>
+                          <th>Status</th>
+                          <th>Date</th>
+                          <th>Manage</th>
+                      </tr>
+                  </thead>
+                </table>
+              </div>
+              <!-- /.card-body -->
+             
+            </div>
+          </div>
+          
+         <!-- leaderboard ends -->
+         
+
+         {% include '../templates/footer.njk' %}
+         <!-- Control Sidebar -->
+         <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+         </aside>
+         <!-- /.control-sidebar -->
+      </div>
+      <!-- ./wrapper -->
+      
+      <!-- Script Files Include -->
+      {% include '../templates/script.njk' %}
+<!-- Toastr JS -->
+      <script src="/js/toastr.js"></script>
+      <script>
+        
+        $(document).ready( function () {
+          $('#myTable').DataTable({
+            "ajax": { 
+              url: "/api/userData",
+              dataSrc:"data"
+            },
+            "oLanguage": {
+              "sSearch": "Search Name",
+              // "sProcessing": "<img src='../../images/loader.gif'>"
+            },
+            "processing": true,
+            "order": [[ 4, "desc" ]],
+            "serverSide": true,
+            "autoWidth": false,
+            "lengthMenu" : [5, 10, 20, 50, 100],
+            "pageLength": 5,
+            "columns": [
+            { "data": function (data, type, row, meta) {
+                          return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+              },
+              { "data": "name" },
+              { "data": "username" },
+              { "data": function(param1){
+                if(!param1.isBlock){
+                  return "Active";
+                }else{
+                  return "Inactive"
+                }
+                } 
+              },
+              { "data": function(param2){
+                let dT = new Date(param2.createdAt);
+                dT.toString('YYYY-MM-dd');
+                return dT;
+                } 
+              },
+              {
+                "data": "action",
+                render : function(data, type, row){
+                  return `
+                          <a href="/admin/userManagement/viewUserProfile/`+row._id+`"><button type="button" class="btn btn-warning btn-xs btn-rounded" name="edit"><i class="fas fa-user-cog" aria-hidden="true"></i></button></a>
+                          <button type="button" data-id ="`+row._id+`" class="btn btn-danger btn-xs btn-rounded deleteBtn" name="delete"><i class="fa fa-trash" aria-hidden="true"></i></button> 
+                          `
+                }
+              }
+            ]
+          });
+        });
+
+      $('body').on('click','.deleteBtn',function(){
+      let userId = $(this).attr("data-id");
+       
+      $.ajax({
+         url: "/api/userDelete/"+userId,
+         method: "POST",
+         success: function(resp){
+          if(resp.status == 'success'){
+            toastr.success(resp.message);
+          }else{
+            toastr.error(resp.message);
+          }
+         }
+      });
+
+      });
+      </script>
+
+   </body>
+</html>

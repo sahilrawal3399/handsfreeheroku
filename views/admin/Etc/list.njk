@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+<h2>Survey Table</h2>
+
+
+<button onclick="GenerateTableSecond()">Survey Table</button>
+<button onclick="GenerateTable()">Question Relational</button>
+<div id="dvTable"></div><br><br>
+<div id="queTable"></div>
+<script type="text/javascript">
+    function GenerateTable() {
+        //Build an array containing Customer records.
+        var customers = new Array();
+        customers.push(["Question Id", "Question", "Answer Type"]);
+        customers.push([1, "What is your name", "text"]);
+        customers.push([2, "What is your Age group", "options"]);
+        customers.push([3, "Have you travel in last 15 days", "options"]);
+        customers.push([4, "Have you come in contact with any Covid+ person?", "options"]);
+ 
+        //Create a HTML Table element.
+        var table = document.createElement("TABLE");
+        table.border = "1";
+ 
+        //Get the count of columns.
+        var columnCount = customers[0].length;
+ 
+        //Add the header row.
+        var row = table.insertRow(-1);
+        for (var i = 0; i < columnCount; i++) {
+            var headerCell = document.createElement("TH");
+            headerCell.innerHTML = customers[0][i];
+            row.appendChild(headerCell);
+        }
+ 
+        //Add the data rows.
+        for (var i = 1; i < customers.length; i++) {
+            row = table.insertRow(-1);
+            for (var j = 0; j < columnCount; j++) {
+                var cell = row.insertCell(-1);
+                cell.innerHTML = customers[i][j];
+            }
+        }
+ 
+        var dvTable = document.getElementById("queTable");
+        dvTable.innerHTML = "";
+        dvTable.appendChild(table);
+    }
+</script>
+<script type="text/javascript">
+    function GenerateTableSecond() {
+        //Build an array containing Customer records.
+        var customers = new Array();
+        customers.push(["Survey Id", "Survey Title"]);
+        customers.push([1, "Covid 19 Survey"]);
+        customers.push([2, " "]);
+        customers.push([3, " "]);
+        customers.push([4, " "]);
+ 
+        //Create a HTML Table element.
+        var table = document.createElement("TABLE");
+        table.border = "1";
+ 
+        //Get the count of columns.
+        var columnCount = customers[0].length;
+ 
+        //Add the header row.
+        var row = table.insertRow(-1);
+        for (var i = 0; i < columnCount; i++) {
+            var headerCell = document.createElement("TH");
+            headerCell.innerHTML = customers[0][i];
+            row.appendChild(headerCell);
+        }
+ 
+        //Add the data rows.
+        for (var i = 1; i < customers.length; i++) {
+            row = table.insertRow(-1);
+            for (var j = 0; j < columnCount; j++) {
+                var cell = row.insertCell(-1);
+                cell.innerHTML = customers[i][j];
+            }
+        }
+ 
+        var dvTable = document.getElementById("dvTable");
+        dvTable.innerHTML = "";
+        dvTable.appendChild(table);
+    }
+</script>
+</body>
+</html>
+

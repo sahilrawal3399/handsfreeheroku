@@ -1,0 +1,16 @@
+Date: 11-08-2021
+----------------
+
+1] Login - GET, POST
+2] Sign Up - GET, POST
+3] AJAX Request
+4] Home - GET
+5] 
+
+Date: 12-08-2021
+----------------
+1] Register New Users
+2] Login Flow
+3] AJAX Response > (If Login Successfully) > To Window Location (url == homepage)
+4] Session
+5] 

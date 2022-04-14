@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/homepage.css">
+    <link href="/css/toastr.css" rel="stylesheet"/>
+    <title>HomePage | {{name}}</title>
+</head>
+<body>
+<div class="container" id="menu_btn" onclick="myFunction(this)">
+  <div class="bar1"></div>
+  <div class="bar2"></div>
+  <div class="bar3"></div>
+</div>
+<div class="card" id="user_panel">
+  <img id="borderimg1" src="images/admin.jpg" alt="John" style="width:40%">
+  <!-- <img id="myImg" class="borderimg1" src=""> -->
+  <h1>{{user.name}}</h1>
+  <p class="title">Points {{user.points}}</p>
+  <p class="title">Followers {{user.followers}}</p>
+  <p class="title">Survey Attended {{user.surveyAttend}}</p>
+  <p class="title">{{user.email}}</p>
+  <button class="logOut" onclick="window.location.href='/editprofile'"><p>Edit Profile</p></button>
+  <button class="logOut" id="logOut"><p>Log Out</p></button>
+</div>
+
+ <div class="shadow">
+        <img  class="logo" alt="" src="images/img.png">
+</div>
+<div class="centertext">
+  <h1 style="font-family: cursive" id="typingeffect">Welcome To Our Survey System</h1>
+</div>
+  
+  <div class="btn_container">
+  <div class="btn_center">
+    {% for survey in totalSurvey %}
+    <a href="/survey/{{survey._id}}"><button class="btn btn-block bg-gradient-primary surveybtn"><p>{{survey.surveyname}} Survey</p></button></a>&nbsp;
+    {% endfor %} 
+  </div>
+</div>
+
+<div class="bottomBtn">
+  <img src="images/robot1.gif" style="height: 10% ; width:10%" >
+  <img src="images/robot2.gif" style="height: 10% ; width:10%" >
+  <img src="images/robot3.gif" style="height: 7% ; width:10%" >
+</div>
+
+
+<script src="/js/toastr.js"></script>
+<script>
+      function myFunction(x) {
+        x.classList.toggle("change");
+      }
+
+      $(document).ready(function(){
+          $("#user_panel").hide();
+        $("#menu_btn").click(function(){
+          $("#user_panel").toggle();
+        });
+      });
+</script> 
+
+ <script>
+                //$('#OpenImgUpload').click(function(){ $('#imgupload').trigger('click'); });
+        $('body').on('click', '#logOut', function(){
+            console.log("Button Clicked")
+            $.ajax({
+                url: "/logout",
+                method: "GET",
+                success: function(resp){
+                        toastr.success("Log Out Successfully");
+                        setTimeout(function(){
+                            window.location.replace('/');
+                        },1000);
+                   
+                }
+            });
+            
+        });
+</script> 
+
+<script>
+  $(document).ready(function(){
+    let username = '{{user.name}}';
+    let data = "Hello "+username+", Welcome To Handsfree Survey System";
+    onLoadSpeech();
+    function onLoadSpeech(){
+      console.log('Function Called');
+      let speech = new SpeechSynthesisUtterance();
+            speech.lang = "en-GB";
+            speech.text = data;
+            speech.volume = 100;
+            speech.rate = 1;
+            speech.pitch = 1;
+            window.speechSynthesis.speak(speech);
+    }
+  })
+</script>
+
+      <!-- <script>
+       async function getFace() {
+         let response = await fetch('https://api.generated.photos/api/v1/faces?per_page=1&gender=female&order_by=random',{
+           method: 'GET',
+           headers: {
+             'Authorization': 'API-Key 9RPzU1GkaCquC0lxcrCNLQ'
+           }
+         });
+         console.info('response: ',response);
+         let result = await response.json();
+         document.getElementById("myImg").src = result.faces[0].urls[4]["512"];
+       }
+       getFace();
+      </script> -->  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> 
+      <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
+
+      <link rel="stylesheet" href="css/homepage.css">
+      <link href="/css/toastr.css" rel="stylesheet"/>
+<!-- NAV BAR START -->
+<!-- <link rel="stylesheet" type="text/css" href="css/navbar.css"> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- NAV BAR END -->
+
+     
+      <title>HomePage | {{name}}</title>
+   </head>
+   <body>   
+    <!-- Navbar -->
+         {% include '../templates/navbar.njk' %}
+         <!-- /.navbar --> 
+      <!-- <div class="split-header container">
+         
+      </div> -->
+
+      <div class="split-left content-wrapper container-fluid">
+        <div class="centered container-fluid ">
+          <img  src="images/robot2.gif" alt="Avatar woman">
+        </div>
+       <!--  <div class="bottomleft .col-md-1">
+          <img class="img-responsive" src="images/robot1.gif" >
+          <h2 class="text-center">About Us</h2>
+        </div> -->
+      </div>
+
+      <div class="split-right right container-fluid content-wrapper">
+    
+        <!-- <div class="topright">         
+            <img class="img-responsive" id="userProfile" src="images/robot1.gif" style="cursor: pointer;">
+            <h2 class="text-center">Profile</h2>
+          </div> -->
+            
+        <div class="centeredText content-wrapper">
+          <p class="typingeffect"  id="typingeffect0">Hello {{user.name}} ,</p>
+          <h1 class="fadeinEffect">Welcome,to Handsfree Survey System.</h1>&nbsp;
+          <h2 class="fadeinEffect" style="margin-left: 12%;" id="typingeffect1"></h2>
+        </div>
+
+        <!-- RIGHT BOTTOM DIV -->
+        <!-- <div class=" bottomright content-wrapper">       
+          
+          <div id="leadDiv"></div>
+          
+          <img class="img-responsive" id="leaderboardImg" src="images/robot1.gif" style="cursor: pointer;">
+          <h2 class="text-center">LeaderBoard</h2>
+       
+        </div> -->
+
+      </div>
+
+      <script src="/js/toastr.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+      <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+       
+      <script>
+        $('#userProfile').on('click' , function(){
+          console.log('Image Has Been Clicked')
+          window.location.replace('/userProfile');
+        }); 
+        
+        $('#leaderboardImg').on('click' , function(){
+          $('#leadDiv').html(html);
+          // setTimeout(function(){
+          $('#orderedList').html(orderedList);  
+          // },300);
+        })
+
+        $(document).mouseup(function(event){
+        let leadDiv = $("#leadDiv");
+        if (!leadDiv.is(event.target) && leadDiv.has(event.target).length === 0){ 
+          $('#leadDiv').html('');
+        }
+        });
+
+        let html =`<div class="leaderboard">
+        <h1>Most Active User</h1>
+          <div class="overFlow">
+               
+              <ol id ='orderedList'>
+                
+              </ol>
+              </div>
+              </div>`
+        let orderedList =``;
+
+         $(document).ready(function(){
+           
+          $.ajax({
+            url : "/api/frontendLeaderboard",
+            method : "GET",
+            success : function(res){
+              console.log();
+              for(let i =0; i< res.leaderboardData.length ; i++){
+
+                orderedList +=`
+                <li>
+                  <mark>`+res.leaderboardData[i].name+`</mark>
+                  <small>`+res.leaderboardData[i].surveyattended+`</small>
+                </li>`
+              }
+            }
+          });
+
+           let datas =["This is a handsfree survey system built with a ai system This is a handsfree survey system built with a ai system This is a handsfree survey system built with a ai system This is a handsfree survey system built with a ai system This is a handsfree survey system built with a ai system"]        
+               
+                setTimeout(function(){
+                  $("#typingeffect1").html(datas[0]);
+                  $(".fadeinEffect").fadeIn(2000);
+                }, 5000);
+
+           // for(let key in datas){
+           //  onLoadSpeech(datas[key]);
+           // }
+           
+           function onLoadSpeech(txt){
+             let speech = new SpeechSynthesisUtterance();
+                   speech.lang = "en-GB";
+                   speech.text = txt;
+                   speech.volume = 100;
+                   speech.rate = 1;
+                   speech.pitch = 1;
+                   window.speechSynthesis.speak(speech);
+           }
+         })
+      </script> 
+   </body>
+</html>

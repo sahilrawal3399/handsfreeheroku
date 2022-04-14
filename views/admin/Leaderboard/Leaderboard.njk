@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Admin | {{name}}</title>
+      
+      <!-- Link Files Include -->
+      {% include '../templates/link.njk' %}
+
+   </head>
+   <body class="hold-transition sidebar-mini layout-fixed">
+      <div class="wrapper">
+         <!-- Preloader -->
+         <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="/admin/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+         </div>
+         <!-- Navbar -->
+         {% include '../templates/header.njk' %}
+         <!-- /.navbar -->
+         <!-- Main Sidebar Container -->
+         {% include '../templates/sidemenu.njk' %}
+
+         <!-- leaderboard start -->
+         <div class="content-wrapper" style="min-height: 1302.4px;">
+         <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">{{name}} Leaderboard</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="myTable" class="table table-bordered">
+                  
+                  <thead>
+                      <tr>
+                          <th>Ranking</th>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>Survey Attended</th>
+                      </tr>
+                  </thead>
+                </table>
+              </div>
+              <!-- /.card-body -->
+             
+            </div>
+          </div>
+          
+         <!-- leaderboard ends -->
+         
+
+         {% include '../templates/footer.njk' %}
+         <!-- Control Sidebar -->
+         <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+         </aside>
+         <!-- /.control-sidebar -->
+      </div>
+      <!-- ./wrapper -->
+      
+      <!-- Script Files Include -->
+      {% include '../templates/script.njk' %}
+
+      <script>
+        
+        $(document).ready( function () {
+          $('#myTable').DataTable({
+            "ajax": { 
+              url: "/api/getLeaderboardData",
+              dataSrc:"data"
+            },
+            "oLanguage": {
+              "sSearch": "Search Name",
+              // "sProcessing": "<img src='../../images/loader.gif'>"
+            },
+            "processing": true,
+            "order": [[ 3, "desc" ]],
+            "serverSide": true,
+            "autoWidth": false,
+            "lengthMenu" : [5, 10, 20, 50, 100],
+            "pageLength": 5,
+            "columns": [
+            { "data": function (data, type, row, meta) {
+                          return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+              },
+              { "data": "name" },
+              { "data": "email" },
+              { "data": "surveyAttend" },
+            ]
+          });
+        });
+
+
+      </script>
+
+   </body>
+</html>
+
+<!-- $(document).ready( function () {
+          $('#myTable').DataTable({
+            "ajax": { 
+              url: "/admin/leaderboard/getLeaderboardData",
+              dataSrc:""
+            },
+            "processing": true,
+            "serverSide": true,
+            "columns": [
+              { "data": "_id" },
+              { "data": "name" },
+              { "data": "progresslevel" },
+              { "data": "email" },
+            ]
+          });
+        }); -->

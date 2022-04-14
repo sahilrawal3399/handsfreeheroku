@@ -1,0 +1,144 @@
+.container {
+  display: inline-block;
+  cursor: pointer;
+  float: right;
+  padding-right: 1%;
+}
+
+.bar1, .bar2, .bar3 {
+  width: 35px;
+  height: 5px;
+  background-color: #333;
+  margin: 6px 0;
+  transition: 0.4s;
+}
+
+.change .bar1 {
+  -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+  transform: rotate(-45deg) translate(-9px, 6px);
+}
+
+.change .bar2 {opacity: 0;}
+
+.change .bar3 {
+  -webkit-transform: rotate(45deg) translate(-8px, -8px);
+  transform: rotate(45deg) translate(-8px, -8px);
+}
+ div.shadow {
+    display: inline-block;
+    position: relative;
+    max-width:45%;
+    max-height:45%;
+    top:50%;
+    left:50%;
+    overflow:visible;
+}
+img.logo {
+    position:relative;
+    max-width:100%;
+    max-height:100%;
+    margin-top:0%;
+    margin-left:-50%;
+}
+div.centertext {
+    position: relative;
+    max-width:55%;
+    max-height:45%;
+    top:50%;
+    left:30%;
+    overflow:visible;
+}
+h1 {
+  font-size: 2.5vw;
+}
+h2 {
+  font-size: 3.0vh;
+}
+p {
+  font-size: 2vmin;
+}
+
+/* [ user profile] */
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+  float: right;
+  padding-top: 2%
+}
+
+.title {
+  color: grey;
+  font-size: 100%;
+}
+
+#logOut {
+
+  border: double;
+  outline: 0;
+  display: inline-block;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+a {
+  text-decoration: none;
+  font-size: 22px;
+  color: black;
+}
+
+#logOut:hover, a:hover {
+  opacity: 0.7;
+}
+
+/*[user profile finish]*/
+
+#surveybtn {
+
+  border: outset;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: black;
+  background-color: #ffbda7fa;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+  border-radius: 15px;
+}
+
+a {
+  text-decoration: none;
+  font-size: 22px;
+  color: black;
+}
+
+#surveybtn:hover, a:hover {
+  opacity: 0.7;
+}
+
+.btn_container {
+  height: 50px;
+  position: sticky;
+}
+
+.btn_center {
+  display: flex;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+#borderimg1 {
+ border: 5px solid #000;
+ border-radius: 50%;
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="maintest.css">
+    <link href="/css/toastr.css" rel="stylesheet"/>
+    <title>HomePage | {{name}}</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="container" id="menu_btn" onclick="myFunction(this)">
+  <div class="bar1"></div>
+  <div class="bar2"></div>
+  <div class="bar3"></div>
+</div>
+<div class="card" id="user_panel">
+  <img id="borderimg1" src="public/images/admin.jpg" alt="John" style="width:40%">
+  <h1>{{user.name}}</h1>
+  <p class="title">Points {{user.points}}</p>
+  <p class="title">Followers {{user.followers}}</p>
+  <p class="title">Survey Attended {{user.surveyAttend}}</p>
+  <p class="title">{{user.email}}</p>
+  <button id="logOut"><p>Log Out</p></button>
+</div>
+
+ <div class="shadow">
+        <img  class="logo" alt="" src="public/images/img.png">
+</div>
+<div class="centertext">
+  <h1 style="font-family: cursive">Welcome To Our Survey System</h1>
+</div>
+  
+  <div class="btn_container">
+  <div class="btn_center">
+    <button class="surveybtn" onclick="window.location.href='/survey'"><p>Survey 1</p></button>
+    <button class="surveybtn" onclick="window.location.href='/survey'"><p>Survey 2</p></button>
+    <button class="surveybtn" onclick="window.location.href='/survey'"><p>Survey 3</p></button>
+  </div>
+</div>
+
+<script>
+function myFunction(x) {
+  x.classList.toggle("change");
+}
+</script> 
+<script>
+$(document).ready(function(){
+    $("#user_panel").hide();
+  $("#menu_btn").click(function(){
+    $("#user_panel").toggle();
+  });
+});
+</script> 
+<script src="/js/toastr.js"></script>
+
+             <script>
+                //$('#OpenImgUpload').click(function(){ $('#imgupload').trigger('click'); });
+        $('body').on('click', '#logOut', function(){
+            console.log("Button Clicked")
+            $.ajax({
+                url: "/logout",
+                method: "GET",
+                success: function(resp){
+                        toastr.success("Log Out Successfully");
+                        setTimeout(function(){
+                            window.location.replace('/homepage');
+                        },1000);
+                   
+                }
+            });
+            
+        });
+    </script>     
+</body>
+</html>

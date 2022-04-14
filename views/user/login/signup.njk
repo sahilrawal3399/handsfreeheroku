@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up | {{name}}</title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+    <link href="/css/toastr.css" rel="stylesheet"/>
+    <!-- Main css -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        form .error {
+                      color: #ff0000;
+                    }
+        form label,
+        form input,
+        form button {
+                      border: 0;
+                      margin-bottom: 3px;
+                      display: block;
+                      width: 100%;
+                    }
+
+    </style>
+</head>
+<body>
+
+    <div class="main">
+
+        <!-- Sign up form -->
+        <section class="signup">
+            <div class="container">
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h2 class="form-title">Sign up</h2>
+                        <form class="register-form" id="register-form" >
+                             
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="name" id="name" placeholder="Enter Your Name"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="username"><img src="images/username.png" style="width: 5%"></label>
+                                <input type="text" name="username" id="username" placeholder="Enter User Name"/><span id="lblMsg2" style="float:left; color:green; margin-left: 8%"></span><span id="lblMsg" style="float:left; color:red; margin-left: 8%"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="email" name="email" id="email" placeholder="Enter Email Id"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" />
+                            </div>
+                            <div class="form-group">
+                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="pass" id="pass" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
+                            </div>
+                            <div class="form-group">
+                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                <input type="password" name="re_pass" id="re_pass" placeholder="Confirm your password" /><p id='message'></p>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" name="agree_term" id="agree-term" class="agree-term" title="Read And Agree The Terms and Condition" />
+                                <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
+                            </div>
+                            <div id="registerButton" class="form-group form-button">
+        
+                                 
+                            </div>
+                        </form>
+                    </div>
+                    <div class="signup-image">
+                        <figure><img src="images/signup-image.jpg" alt="sing up image"></figure>
+                        <a href="/" class="signup-image-link">I am already member</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+    </div>
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/additional-methods.js"></script>
+    <script src="/js/toastr.js"></script>
+    <script src="js/main.js"></script>
+    
+
+    <script>
+        let word = '';
+        let userValidated = false;
+
+        let userValidation = function(){
+          word = document.getElementById("username").value;
+                               
+                // [ AJAX For checking Username Availability ]
+                $.ajax({
+                    url: "/api/userValidation",
+                    method: "POST",
+                    data : {
+                        username : word
+                    },
+                    success: function(resp){
+                    
+                    if(resp.status == 'success'){
+                        userValidated = true;
+                        $('#lblMsg2').html('');
+                        $('#lblMsg').html('');
+                        $('#lblMsg2').html(resp.message);
+                    }
+                    else {
+                        userValidated = false;
+                        $('#lblMsg').html('');
+                        $('#lblMsg2').html('');
+                        $('#lblMsg').html(resp.message);
+                    }
+                }
+                });  
+        };
+        // [ On Change Envent For Username ]
+
+        $(document).mouseup(function(e){
+            let container = $("#username");
+
+            // If the target of the click isn't the container
+            if(!container.is(e.target) && container.has(e.target).length === 0){
+                word = document.getElementById("username").value;
+               
+               if(word.length >=8){
+               userValidation();
+               }
+            }
+        })
+
+
+        
+        $("#username").on("paste keypress", function() {
+         
+         let regexprn = new RegExp("^[a-zA-Z0-9_.]+$");
+         let key = String.fromCharCode(event.charCode ? event.which : event.charCode);
+         
+         if (!regexprn.test(key)) {
+                $('#lblMsg2').html('');
+                $('#lblMsg').html('');
+                event.preventDefault();
+                $('#lblMsg').html('Sepecial characters and spaces are not allowed.');
+                return false;
+         }else {
+               $('#lblMsg').html('');
+               $('#lblMsg2').html('');
+               setTimeout(function(){ 
+               word = document.getElementById("username").value;
+               
+               if(word.length >=8){
+               userValidation();
+               }else{
+                $('#lblMsg').html('Username must contain atleast 8 characters!!');
+               }
+               },10);                   
+
+         }
+        });
+       
+
+        $("#agree-term").change(function() {
+            let html =``;
+            if(this.checked) {
+            toastr.info("You Have Agreed Terms & Conditions");
+            html =`<input type="button" name="signup" id="signup"  class="form-submit" value="Register" /> `;
+            $('#registerButton').html(html);
+
+            }else{
+            toastr.info("Read Terms & Conditions And Agree To Continue Further");
+            $('#registerButton').html('');
+            }
+        });
+
+           $('body').on('click', '#signup', function(){
+            $('#lblMsg').html('');
+            $('#lblMsg2').html('');
+
+            let value = $("#pass").val();
+
+            $.validator.addMethod("checklower", function(value) {
+              return /[a-z]/.test(value);
+            });
+            $.validator.addMethod("checkupper", function(value) {
+              return /[A-Z]/.test(value);
+            });
+            $.validator.addMethod("checkdigit", function(value) {
+              return /[0-9]/.test(value);
+            });
+
+            let validator = $("#register-form").validate({
+            rules: {
+                name: "required",
+                username: {
+                    required:true,
+                    minlength: 8
+                },
+                email: {
+                    required:true,
+                    email:true
+                },
+                pass: {
+                    required:true,
+                    minlength: 8,
+                    maxlength: 30,
+                    checklower: true,
+                    checkupper: true,
+                    checkdigit: true
+                },
+                re_pass: {
+                    equalTo: "#pass"
+                }
+            },
+            messages: {
+                name:"Enter Your Name",
+                username:{
+                    required:"Enter Username",
+                    minlength: "The Minimum Length must be 8"
+                },
+                email:{
+                    required:"Enter Email Id",
+                    email:"Enter the vaild Email Id"
+                },
+                pass: {
+                    required:"Enter the Password",
+                    minlength: "The Minimum Length must be 8",
+                    maxlength: "The Maximum Length must not be more than 30",
+                    checklower: "The password must consist aleast one lowwer case letter",
+                    checkupper: "The password must consist aleast one upper case letter",
+                    checkdigit: "The password must consist aleast one digit case letter"
+                },
+                re_pass: " The confirm password is not matching the Password"
+            }
+            });
+            if (validator.form()) {
+            if(userValidated){
+            let name = $('#name').val();
+            let username = $('#username').val();
+            let email = $('#email').val();
+            let password = $('#pass').val();
+            
+            $.ajax({
+                url: "/signup",
+                method: "POST",
+                data: {
+                    name: name,
+                    username : username,  
+                    email: email,
+                    password: password
+                },
+                success: function(resp){
+                    console.log('Response Data: ',resp);
+                    if(resp.status == 'success'){
+                        toastr.success(resp.message);
+                        setTimeout(function(){
+                            window.location.replace('/');
+                        },1000);
+                    }
+                    else {
+                        toastr.error(resp.message);
+                    }
+                }
+            });
+          }else{
+            toastr.error('Username is already taken!!');
+          }
+        }
+
+        });
+    </script>
+</body>
+</html>

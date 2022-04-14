@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../../css/survey.css">
+    <link href="../../css/toastr.css" rel="stylesheet"/>
+     <!-- Links -->
+   {% include '../templates/links.njk' %}
+   <!-- Links -->
+    <title>Survey | {{name}}</title>
+</head>
+<body>
+
+     <!-- Navbar -->
+     {% include '../templates/navbar.njk' %}
+     <!-- /.navbar -->
+<!-- 
+    <section id="breadcrumbs" class="breadcrumbs">
+    </section> -->
+    <!-- <script src="../../js/surveypage.js"></script> -->
+    <audio src="../../sounds/beeep.mp3" id="player">
+        <p>If you are reading this, it is because your browser does not support the audio element. </p>
+    </audio>
+       <!-- ======= Why Us Section ======= -->
+    <section id="why-us" class="why-us section-bg">
+      <div class="container-fluid" data-aos="fade-up">
+
+        <div class="row">
+    <div class="col-lg-5 align-items-stretch order-1 order-lg-2 img" style='background-image: url("/homepage/img/why-us.png");' data-aos="zoom-in" data-aos-delay="150">&nbsp;</div>
+          <div class="col-lg-7 d-flex flex-column justify-content-center align-items-stretch  order-2 order-lg-1">
+
+            <div class="content">
+              <h3>Hello {{user.name}}, you are attending <strong>{{surveyDetails.surveyname}}</strong> Survey</h3>
+              <p>
+                {{surveyDetails.description}}
+              </p>
+            </div>
+
+          </div>
+
+          
+        </div>
+
+      </div>
+    </section><!-- End Why Us Section -->
+    <div class="centertext">
+        <h1 style="font-family: cursive">Welcome To Our Survey System</h1>
+                                <span style="font-family: cursive; 
+                                 " id="que_data"></span><br><br>
+                                 <span style="font-family: cursive; 
+                                border: inset; border-bottom-width: thick; border-color: #afeeee" id="ans_data"></span>
+                                
+    </div>
+   <div class="buttoncenter">
+     <button id='play' data-v-4d55ab51="" class="form-button primary ab-small ab-pill ab-basic-a" title="Start the SURVEY"> <span data-v-4d55ab51="" class="internal">Start Survey &#10148;</span></button>
+                                <br><br><button id='hide_div' data-v-4d55ab51="" class="form-button primary ab-small ab-pill ab-basic-a hide" title="Use this to REPEAT the question Or when our A.I.missed your answer"  > <span data-v-4d55ab51="" class="internal">Repeat 🔁</span></button>
+   </div>
+    <footer class="footer">
+        <div class="info">
+        <p><strong>INFO!</strong><marquee behavior="" direction=""> Remember that if you want to skip any question say <strong>"SKIP"</strong></marquee> </p>   
+        </div>
+        <div class="warn">
+                      <p>
+                        <strong>WARNING!!</strong>
+                        <marquee behavior="" direction=""> If the answer of the question is 
+                            <strong>"YES"</strong> say 
+                            <strong>"I do"</strong> And if the answer is 
+                            <strong>"NO"</strong> say 
+                            <strong>"SKIP" PLEASE</strong> follow this instruction otherwise the 
+                            <strong>SURVEY</strong>may stuck! 
+                            <strong>Only</strong> say YES And NO While 
+                            <strong>Confirmation Message!!</strong>
+                        </marquee>  
+                    </p>  
+        </div> 
+        
+    </footer>
+
+<!-- Footer -->
+{% include '../templates/footer.njk' %}
+<!-- Footer -->
+<!-- Scripts -->
+{% include '../templates/scripts.njk' %}
+<!-- Scripts -->
+    
+   <script src="/js/toastr.js"></script>
+   <script>
+       let DB = {
+                que : [],
+                ans : []
+           }
+
+       let id = '{{id}}';
+       let collectedData = '';
+       console.log("id :: " ,id);
+
+       $.ajax({
+        url : "/api/getQuestionsAPI/"+id+"",
+        method : "GET",
+        success : function(resp){
+          console.log('Api Called SucessFully !!');
+          console.log('Fetch DaTa : ' ,resp.queData);
+          collectedData = resp.queData;
+          for(let i=0 ; i < collectedData.length ; i++){
+            let questions = collectedData[i].question;
+            DB.que.push(questions);
+          }
+
+        }
+       });
+
+          
+           
+
+
+let conFirmMsg = "For confirmation say YES or NO to speech again"
+
+let index = 0;
+let confirmAction = false;
+let ansDataval = "";
+var re_peat="";
+let audio = document.getElementById("player");
+let count = 0;
+
+$(document).ready(function () { 
+    $(hide_div).hide();
+                          
+    
+    // toastr.info(`IMPORTANT INFORMATION!! \nRemember that if you want to skip any question say "SKIP"`);
+    // toastr.info(`IMPORTANT INFORMATION!! \nIf the answer of the question is "YES" say "I do" \nAnd if the answer is "NO" say "SKIP"`);
+    // toastr.info(`Only Say "YES" And "NO" While Confirmation Message!!`)
+
+    $('#play').click(function (){
+        startQue(index,confirmAction);
+        $(play).hide();
+        $(hide_div).show();
+    });
+
+    $('#hide_div').click(function (){
+        var x = confirm(`Are You Sure you want click this\n This button is only use to repeat the questions.\n Or When our A.I. missed your answer. `);
+
+        if (x) {
+            startQue(re_peat,false);
+            console.log('its working..');
+            return true;
+            
+        }else {
+            return false;
+        } 
+    });
+    
+    
+    function startQue(indexVal,confVal) {
+        re_peat=indexVal;
+        console.log('indexVal >>>>', indexVal);
+        console.log("Count: ",count);
+        if(indexVal < DB.que.length){
+            document.getElementById("que_data").innerHTML = DB.que[indexVal];
+            // + " Please Speak after the beep sound"
+            let data = DB.que[indexVal] ;
+            if(confVal == true){
+                data = conFirmMsg;
+            }
+            console.log("Data: ",data);
+            let speech = new SpeechSynthesisUtterance();
+            speech.lang = "en-US";
+            speech.text = data;
+            speech.volume = 100;
+            speech.rate = 2;
+            speech.pitch = 0.7;
+            window.speechSynthesis.speak(speech);
+            speech.onend = function () {
+                count = count + 1;
+                console.log('Count St - Onend: ',count);
+                runSpeechRec(indexVal,confVal);
+            }
+        }
+        else{
+            document.getElementById("que_data").innerHTML = "<b>Thank You For Participating in our Survey Have a Nice Day.</b>"
+            document.getElementById("ans_data").innerHTML = ""
+            document.getElementById("demo").innerHTML = DB.ans;
+        }
+    }
+    // Repeat 
+    
+    
+    
+        function runSpeechRec(indexVal,confVal) {
+            console.log("SpeechInd >>>>",indexVal);
+            console.log("confVal >>>>",confVal);
+            audio.play();
+            count = count + 1;
+            console.log('Count - Audio: ',count);
+            var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+            var recognition = new SpeechRecognition();
+
+            recognition.onresult = function (event) {
+                let ansData = event.results[0][0].transcript;
+                let confidence = event.results[0][0].confidence;
+                console.log("Ans >>>>>",ansData);
+                
+        
+                // [ Yes ]
+                if(ansData == 'yes'|| ansData=='y'|| ansData=='yes yes'|| ansData=='yes yes yes'){
+                    DB.ans.push(ansDataval);
+                    console.log('ansDataval>>>'+ansDataval);
+                    indexVal = indexVal+1;
+                    console.log("DB >>",DB.ans);
+                    document.getElementById("ans_data").innerHTML = "<b>Ans :</b> ";
+                    count = count + 1;
+                    console.log('Count - Yes: ',count);
+                    startQue(indexVal,false);
+                }
+                // [ No ]
+                else if(ansData == 'no' || ansData=='n'|| ansData=='no no'|| ansData=='no no no') {
+                    console.error("No");
+                    ansDataval = ansData;
+                    document.getElementById("ans_data").innerHTML = "<b>Ans :</b> " + ansData;
+                    count = count + 1;
+                    console.log('Count - No: ',count);
+                    startQue(indexVal,false);
+                }
+                else {
+                    console.error("Else");
+                    ansDataval = ansData;
+                    document.getElementById("ans_data").innerHTML = "<b>Ans :</b> " + ansData;
+                    count = count + 1;
+                    console.log('Count - No: ',count);
+                    // startQue(indexVal,false);
+                }
+
+                if(confVal){
+
+                }else{
+                    console.error('-E-L-S-E-');
+                    startQue(indexVal,true);
+                }
+            }
+            recognition.start();
+        }
+    
+     }); 
+       
+   </script>
+
+<!-- <script>
+
+  // console.log('collectedData : ',resp.queData);
+    
+// function repeat() {
+//     console.log('Its Workingggg');
+//     startQue(indexVal,false);
+// }
+</script> -->
+</body>
+</html>

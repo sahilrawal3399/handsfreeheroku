@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css">
+    <link rel="stylesheet" href="../../css/survey.css">
+    <link href="../../css/toastr.css" rel="stylesheet"/>
+    <!-- Links -->
+    {% include '../templates/links.njk' %}
+    <!-- Links -->
+    <title>Survey | {{name}}</title>
+  </head>
+  <body>
+    <!-- Navbar -->
+    {% include '../templates/navbar.njk' %}
+    <!-- /.navbar -->
+    <!-- 
+      <section id="breadcrumbs" class="breadcrumbs">
+      </section> -->
+    <!-- <script src="../../js/surveypage.js"></script> -->
+    <audio src="../../sounds/beeep.mp3" id="player">
+      <p>If you are reading this, it is because your browser does not support the audio element. </p>
+    </audio>
+    <!-- ======= Why Us Section ======= -->
+    <section id="why-us" class="why-us section-bg">
+      <div class="container-fluid" data-aos="fade-up">
+        <div class="row">
+          <div class="col-lg-6 align-items-stretch order-1 order-lg-2 img" style='background-image: url("/homepage/img/why-us.png");' data-aos="zoom-in" data-aos-delay="150">&nbsp;</div>
+          <div class="col-lg-6 d-flex flex-column justify-content-center align-items-stretch  order-2 order-lg-1">
+            <div class="content">
+              <h3>Hello {{user.name}}, you are attending <strong>{{surveyDetails.surveyName}}</strong> Survey</h3>
+              <p>
+                {{surveyDetails.description}}
+              </p>
+              <div class="testl"><a class="start_btn"><i class="fas fa-play"></i></a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Why Us Section -->
+    <!-- <div class="centertext">
+      <span style="font-family: cursive; 
+       " id="que_data"></span><br><br>
+       <span style="font-family: cursive; 
+      border: inset; border-bottom-width: thick; border-color: #afeeee" id="ans_data"></span>
+                              
+      </div> -->
+    <!--  <section id="why-us" class="why-us section-bg">
+      </section> -->
+    <!-- Footer -->
+    {% include '../templates/footer.njk' %}
+    <!-- Footer -->
+    <!-- Scripts -->
+    {% include '../templates/scripts.njk' %}
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/js/toastr.js"></script>
+    <script>
+      $('.start_btn').click(function(){
+       // $('#why-us').html(whyus);
+       queFetching();
+      })
+      
+      
+      
+      let DB = {
+               que : [],
+               ans : []
+               }
+      
+      let id = '{{id}}';
+      let collectedData = '';
+      
+      let parentId = '';
+      let optionval = '';
+      let firstQue = true;
+      let whyus = ``;
+      let queData = '';
+      let ansObj = {};
+      
+      let conFirmMsg = "To go further say next or say repeat to repeat the question"
+      
+      let index = 0;
+      let confirmAction = false;
+      let ansDataval = "";
+      let re_peat="";
+      let audio = document.getElementById("player");
+      let surveyPoints = 0;
+      
+      let queFetching = function(parentId,optionval){
+      
+      if (parentId == undefined) {
+       parentId = '';
+      }
+      if (optionval == undefined) {
+       optionval = '';
+      }
+      
+           $.ajax({
+           url : "/api/getQuestionsAPI?id="+id+"&parentId="+parentId+"&optionVal="+optionval+"&firstQue="+firstQue,
+           method : "GET",
+           success : function(resp){
+           collectedData = resp.responseData;
+           console.log("collectedData",collectedData);
+            
+           let optionData = '';
+
+           if (resp.statuscode == 200) {
+           whyus = `<div class="container-fluid" data-aos="fade-up">
+                       <div class="container mt-5">
+                       <div class="d-flex justify-content-center row">
+                           <div class="col-md-10 col-lg-10">
+                               <div class="border">
+                                   <div class="question bg-white p-3 border-bottom">
+                                       <div class="d-flex flex-row justify-content-between align-items-center mcq">
+                                           <h4>{{surveyDetails.surveyName}} Survey</h4>
+                                       </div>
+                                   </div>
+                                   <div class="question bg-white p-3 border-bottom">
+                                       <div class="d-flex flex-row align-items-center question-title">
+                                           <h3 class="text">Q.</h3>
+                                           <h5 class="mt-1 ml-2" id= "parentId"  data-value = '`+collectedData[0]._id+`'>`+collectedData[0].question+`</h5>
+                                       </div>`;
+      
+            if ( collectedData[0].hasOwnProperty('options') && collectedData[0].options != '' ) {
+            let alpha = ['A','B','C','D'];
+      
+            for (let i = 0; i < collectedData[0].options.length; i++) {
+              optionData += " "+alpha[i] +" "+ collectedData[0].options[i][`option_`+i];
+              console.log("first Option Data ", optionData)
+             whyus += `<div class="ans ml-2">
+                       <p id="`+alpha[i]+`" data-value ="`+collectedData[0].options[i][`option_`+i]+`">`+alpha[i]+`. `+collectedData[0].options[i][`option_`+i]+`</p>
+                       </div>`;           
+            }             
+            }
+            // else{
+            //   whyus += `<input type = 'text'></input>`; 
+            // }
+                           
+            whyus += `<span id ='ans_data'></span>
+            </div>
+                       <div class="d-flex flex-row justify-content-between align-items-center p-3 bg-white"><button id="repeat_btn" class="btn btn-primary d-flex align-items-center btn-warning" type="button"><i class="fas fa-redo-alt mt-1 mr-1"></i>&nbsp;Repeat</button><button class="btn btn-primary border-success align-items-center btn-success" type="button" id="nextBtn">Next <i class="fa fa-angle-right ml-2"></i></button></div>
+                       </div>
+                       </div>
+                   </div>
+               </div>
+            </div>`;
+      
+           firstQue = false;
+           console.log("second Option data ",optionData)
+           queData = collectedData[0].question +" "+ optionData;
+           console.log("queData before calling function ",queData)
+           startQue(queData,confirmAction);
+
+            // Next button
+           $('#why-us').html(whyus);
+               $('#nextBtn').click(function(){
+               // $('#why-us').html(whyus);
+               console.log('Next Button Has been Clicked')
+               queFetching();
+               })
+
+          //  Repeat button
+           $('#repeat_btn').click(function (){
+              console.log("Repeat got clicked")
+                var x = confirm(`Are You Sure you want click this\n This button is only use to repeat the questions.\n Or When our A.I. missed your answer. `);
+            
+                if (x) {
+                    startQue(re_peat,false);
+                    console.log('its working..');
+                    return true;
+                    
+                }else {
+                    return false;
+                } 
+            });
+            }else{
+               let closingImg = '/homepage/img/thankYou.png';
+               let closingBtn = 'Submit';
+               let closingBtnId = 'submit';
+               if (resp.statuscode == 403) {
+                   closingImg = '/homepage/img/thankYou.png'
+                   closingBtn = 'Back';
+                   closingBtnId = 'back';
+               }else if (resp.statuscode == 404) {
+                   closingImg = '/homepage/img/surveyNotFound.png'
+                   closingBtn = 'Back';
+                   closingBtnId = 'back';
+               }
+               whyus = `<div class="container-fluid" data-aos="fade-up">
+      
+                           <div class="row">
+                             <div class="col-lg-6 align-items-stretch order-1 order-lg-2 img" style='background-image: url("`+closingImg+`");' data-aos="zoom-in" data-aos-delay="150">&nbsp;</div>
+                             <div class="col-lg-6 d-flex flex-column justify-content-center align-items-stretch  order-2 order-lg-1">
+      
+                               <div class="content">
+                                 <br><br>
+                                 <h3><strong>`+resp.responseData+`</strong></h3> 
+                                 <br><br><br><br>
+                               </div>
+                             </div>                              
+                           </div>
+                      </div>
+                       <div class="text-center">
+                         <button type="button" id="`+closingBtnId+`" style="background-color :#3c4c6a" class="btn btn-primary">`+closingBtn+`</button>
+                       </div>`;
+                      $('#why-us').html(whyus);   
+                      $('#back').click(function(){
+                       window.location.replace('/homepage');
+                      });  
+                      $('#submit').click(function(){
+                       submitAns();
+                      }) ; 
+            }             
+           }
+          });
+      }         
+      
+
+      // Function For Submmitng Survey Ans Data
+      function submitAns(){
+        $.ajax({
+           url : '/survey/'+id,
+           method : 'POST',
+           data :{
+            userId : '{{user._id}}',
+            ansData : ansObj ? ansObj : {},
+            surveyPoints : surveyPoints
+           },
+           success : function(resp){
+            console.log('Response Message :',resp.message)
+            window.location.replace('/homepage');
+           }
+        });
+      }
+      
+      
+      // $(document).ready(function () { 
+       
+       function startQue(indexVal,confVal) {
+           re_peat=indexVal;
+           console.log('indexVal >>>>', indexVal);
+           data = indexVal;
+           // if(indexVal < DB.que.length){
+               // document.getElementById("que_data").innerHTML = DB.que[indexVal];
+               // + " Please Speak after the beep sound"
+               // let data = DB.que[indexVal] ;
+               if(confVal == true){
+                   data = conFirmMsg;
+               }
+               console.log("Data: ",data);
+               let speech = new SpeechSynthesisUtterance();
+               speech.lang = "en-US";
+               speech.text = data;
+               speech.volume = 100;
+               speech.rate = 1;
+               speech.pitch = 0.7;
+               window.speechSynthesis.speak(speech);
+               speech.onend = function () {
+                   runSpeechRec(indexVal,confVal);
+               }
+           // }
+           // else{
+           //     document.getElementById("que_data").innerHTML = "<b>Thank You For Participating in our Survey Have a Nice Day.</b>"
+           //     document.getElementById("ans_data").innerHTML = ""
+           //     document.getElementById("demo").innerHTML = DB.ans;
+           // }
+       }
+       
+       function runSpeechRec(indexVal,confVal) {
+           console.log("SpeechInd >>>>",indexVal);
+           console.log("confVal >>>>",confVal);
+           audio.play();
+           var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+           var recognition = new SpeechRecognition();
+      
+           recognition.onresult = function (event) {
+               let ansData = event.results[0][0].transcript;
+               let confidence = event.results[0][0].confidence;
+               console.log("Ans >>>>>",ansData);
+               
+       
+           // [ Yes ]
+           if(ansData == 'next'|| ansData=='n'|| ansData=='next next'|| ansData=='next next next'){
+               if (ansDataval == "a" || ansDataval == "b" || ansDataval == "c" || ansDataval == "d"){
+                   let optID = ansDataval.toUpperCase();
+                   optionval = $('#'+optID).attr('data-value');
+                   parentId = $('#parentId').attr('data-value');
+                   surveyPoints = surveyPoints + 5;
+                   ansObj[parentId] = optionval;
+                   DB.ans.push(optionval)
+                   document.getElementById("ans_data").innerHTML = "<b>Ans :</b> ";
+                   queFetching(parentId,optionval);
+      
+               }else{
+                   DB.ans.push(ansDataval);
+                   console.log("DB >>",DB.ans);
+                   surveyPoints = surveyPoints + 5;
+                   document.getElementById("ans_data").innerHTML = "<b>Ans :</b> ";
+                   parentId = $('#parentId').attr('data-value');
+                   ansObj[parentId] = ansDataval ;
+                   optionval = "";
+                   queFetching(parentId,optionval);
+               }
+               // startQue(indexVal,false);
+           }
+           // [ No ]
+           else if(ansData == 'repeat' || ansData=='r'|| ansData=='repeat repeat'|| ansData=='repeat repeat repeat') {
+               ansDataval = ansData;
+               document.getElementById("ans_data").innerHTML = "<b>Ans :</b> " + ansData;
+               startQue(indexVal,false);
+           }
+           else {
+               ansDataval = ansData;
+               document.getElementById("ans_data").innerHTML = "<b>Ans :</b> " + ansData;
+               // startQue(indexVal,false);
+           }
+      
+           if(confVal){
+      
+           }else{
+      
+               startQue(indexVal,true);
+           }
+       }
+           recognition.start();
+       }
+       
+      // }); 
+
+          
+    </script>
+    <!--     // $(hide_div).hide();
+      // $('#play').click(function (){
+      //     startQue(index,confirmAction);
+      //     $(play).hide();
+      //     $(hide_div).show();
+      // });
+      
+     
+       -->
+    <!-- <script>
+      // console.log('collectedData : ',resp.queData);
+        
+      // function repeat() {
+      //     console.log('Its Workingggg');
+      //     startQue(indexVal,false);
+      // }
+      </script> -->
+  </body>
+</html>

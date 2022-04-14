@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="css/add.css">
+</head>
+<body>
+
+<h2>Add Survey</h2>
+<div class="container">
+  <form>
+  <div class="row">
+    <div class="col-75">
+      <label for="fname">Survey Title</label>
+      <input type="text" id="fname" name="firstname" placeholder="Survey Title">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-75">
+      <label for="lname">Question</label>
+      <input type="text" id="lname" name="lastname" placeholder="Question">
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-75">
+      <label for="country">Select Answer Type</label>
+      <input type="button" id="ifText" value="Text">
+      <input type="button" id="ifOptions" value="Options">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-75" id="options">
+      <label for="A">Option A</label><input type="text" name="OptionA" id="A" placeholder="Add Option A">
+      <label for="B">Option B</label><input type="text" name="OptionB" id="B" placeholder="Add Option B">
+      <label for="C">Option C</label><input type="text" name="OptionC" id="C" placeholder="Add Option C">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-75">
+    <input id="add" type="button" value="ADD">
+    </div>
+  </div>
+  </form>
+</div>
+
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <script>
+$(document).ready(function () {
+   $('#options').hide();
+    
+    // [ If Options ]
+    $('#ifOptions').click(function (){
+        $('#options').show();
+    });
+    // [ If Text ]
+    $('#ifText').click(function (){
+        $('#options').hide();
+    });
+    // [ Adding Survey btn ]
+    $('#add').click(function() {
+    window.location.href = '/dashboard';
+    // return false;
+});
+
+   });
+ </script>
+</body>
+</html>

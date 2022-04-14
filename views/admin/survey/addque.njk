@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Admin | {{name}}</title>
+      <!-- Link Files Include -->
+      {% include '../templates/link.njk' %}
+   </head>
+   <body class="hold-transition sidebar-mini layout-fixed">
+      <div class="wrapper">
+         <!-- Preloader -->
+         <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="/admin/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+         </div>
+         <!-- Navbar -->
+         {% include '../templates/header.njk' %}
+         <!-- /.navbar -->
+         <!-- Main Sidebar Container -->
+         {% include '../templates/sidemenu.njk' %}
+         <div class="content-wrapper" style="min-height: 1302.4px;">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+               <div class="container-fluid">
+                  <div class="row mb-2">
+                     <div class="col-sm-6">
+                        <h1>Add Survey</h1>
+                     </div>
+                     <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                           <li class="breadcrumb-item"><a href="/admin/survey">Home</a></li>
+                           <li class="breadcrumb-item active">Survey</li>
+                        </ol>
+                     </div>
+                  </div>
+               </div>
+               <!-- /.container-fluid -->
+            </section>
+            <!-- Main content -->
+            <section class="content">
+               <div class="container-fluid">
+                  <div class="row">
+                     <div class="col-12">
+                        <div class="card">
+                           <!-- /.card-header -->
+                           <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                        <div class="card">
+                           <div class="card-header">
+                              <h3 class="card-title">Add Survey</h3>
+                           </div>
+                           <!-- /.card-header -->
+                           <form class="form-horizontal">
+                              <div class="card-body">
+                                 <div class="form-group row">
+                                    <label for="questionTitle" class="col-sm-2 col-form-label">Question Title</label>
+                                    <div class="col-sm-10">
+                                       <input type="text" class="form-control" id="questionTitle" placeholder="Enter Question Title">
+                                    </div>
+                                 </div>
+                                 <div class="form-group row">
+                                    <label for="question" class="col-sm-2 col-form-label">Question</label>
+                                    <div class="col-sm-10">
+                                       <input type="text" class="form-control" id="question" placeholder="Enter Question">
+                                    </div>
+                                 </div>
+                                 <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Answer Type</label>
+                                    <div class="col-sm-10">
+                                       <div class="form-group">
+                                          <select class="form-control" id="answerTypeSelect">
+                                             <option value="text">Text</option>
+                                             <option value="option">Option</option>
+                                          </select>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <!-- Dynamic HTML -->
+                                 <div id="answerTypeOptionHtml">
+                                 </div>
+                                 <div id="parentAva">
+                                    <p><b>Is Parent Available:</b>&nbsp;&nbsp;
+                                       <input type="radio" id="yes" name="parent" value="yes" required><label for="yes">YES</label>&nbsp;         
+                                       <input type="radio" id="no" name="parent" value="no"><label for="no">NO</label>
+                                    </p>
+                                    <div id="parentAvailable"></div>
+                                 </div>
+                              </div>
+                              <!-- /.card-body -->
+                              <div class="card-footer">
+                                 <button type="button" id="submitBtn" class="btn btn-info">Submit</button>
+                                 <button type="button" class="btn btn-default float-right">Cancel</button>
+                              </div>
+                              <!-- /.card-footer -->
+                           </form>
+                           <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                     </div>
+                     <!-- /.col -->
+                  </div>
+                  <!-- /.row -->
+               </div>
+               <!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+         </div>
+         {% include '../templates/footer.njk' %}
+         <!-- Control Sidebar -->
+         <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+         </aside>
+         <!-- /.control-sidebar -->
+      </div>
+      <!-- ./wrapper -->
+      <!-- Script Files Include -->
+      {% include '../templates/script.njk' %}
+
+      <!-- [ Question Script ] -->
+      <script>
+         // [ Onload ]
+         // sss
+         let intTextBox = 0;
+         let op = 'no';
+         
+         // [ Change Op - Sel - Op ]
+         $('#answerTypeSelect').on('change', function() {
+            
+            let opVal = $(this).val();
+            console.log("opVal",opVal);
+            let html = ``;
+            if(opVal == 'option'){
+               html +=`<div class="form-group row">
+                         <button type="button" onclick="addElement();" class="btn btn-info float-right">Add
+                         </button>
+                       </div>`;
+               $('#answerTypeOptionHtml').html(html);
+            }
+            else {
+               // sss
+               intTextBox = 0;
+               $('#answerTypeOptionHtml').html("");
+            }
+         });
+         
+         
+         // [ Op - Change - Add ]
+         function addElement() {
+            let objNewDiv=``;
+            if(intTextBox <= 3 ){
+               
+                objNewDiv = `<div class="form-group row opCls">
+                                    <div class="col-sm-2">
+                                       <input type="text" id="optionTitle_` + intTextBox + `" class="form-control" name="optionTitle_` + intTextBox + `"  placeholder="Enter Title For Option ">
+                                    </div>
+                                    <div class="col-sm-2">
+                                       <input type="text" id="optionSpeech_` + intTextBox + `" class="form-control" name="optionSpeech_` + intTextBox + `"  placeholder="Enter Speech For Option ">
+                                    </div>
+                                    <button type="button"  class="btn btn-info removeBtn float-right">Remove
+                                    </button>
+                             </div>`;
+               $('#answerTypeOptionHtml').append(objNewDiv);
+               intTextBox++;
+            }
+         }
+         
+         // [ Op - Change - Remove ]
+         $('body').on('click','.removeBtn',function(){
+            $(this).parent('.opCls').remove();
+            intTextBox--;
+         });
+         
+         
+         // [ Parent Availability ]
+         $('input[type=radio][name=parent]').change(function() {          
+            let parent = ``;         
+            if (this.value == 'yes') {
+               op=this.value;
+               parent=` <select class="form-control" id="parentOption">
+                           
+                           {% for question in questions %}
+                             <option value="{{question._id}}">{{question.question}}</option>
+                           {% endfor %}  
+                           
+                        </select>`;
+         
+               $('#parentAvailable').html(parent);
+               // [ Parent Option ]
+         $('#parentOption').on('change', function() {
+            
+            let parentOP = $(this).val();
+            console.log("parentOP",parentOP);
+          });
+           
+           } 
+           else{
+            op='no';
+              $('#parentAvailable').html("");
+           }
+         });
+         
+         
+         
+         
+         // [ Submit ]
+         $('body').on('click', '#submitBtn', function(){
+             
+               let questionTitle = $('#questionTitle').val();
+               let question = $('#question').val();
+               let opvl = $('#answerTypeSelect').val();
+               let parent = op;                
+         
+               let parentOP = $('#parentOption').val();
+               let reqJson = {
+                  questionTitle: questionTitle,
+                  question: question,
+                  answerType: opvl,
+                  parent: parent
+               }
+         
+               if(reqJson.parent == 'yes'){
+                  reqJson.parentQueId = parentOP ;
+               }
+               if(reqJson.answerType == 'option'){
+
+                // [ To get option value i have to use loop using IntTextBox ]
+                let opObj ={};
+                for (let i=0; i<=intTextBox; i++){
+                  let opSpeech = $(`#optionSpeech_`+i+``).val();
+                  let opTitle = $(`#optionTitle_`+i+``).val();
+                  opObj['optionSpeech_' + i] = opSpeech;
+                  opObj['optionTitle_' + i] = opTitle;
+                  }
+                  reqJson.option = opObj;
+                  console.log("reqJson.option",reqJson.option)
+                }
+               
+                console.log('reqJson',reqJson);
+                  $.ajax({
+                 url: "/admin/survey/add",
+                 method: "POST",
+                 data: reqJson,
+                 success: function(resp){
+                     console.log('Response Data: ',resp);
+                     if(resp.status == 'success'){
+                         toastr.success(resp.message);
+                         setTimeout(function(){
+                             window.location.replace('/admin/dashboard');
+                         },1000);
+                     }
+                     else {
+                         toastr.error(resp.message);
+                     }
+                 }
+             });
+               });
+         
+             
+             
+         // });
+         
+         
+         
+         
+         
+         
+         
+         
+          
+         
+         
+         // [ Question Load ]
+         /*
+           Logic
+         */
+         
+         // [ Question Submit ]
+         // $('body').on('click', '#submitBtn', function(){
+             
+         //     let questionTitle = $('#questionTitle').val();
+         //     let question = $('#question').val();
+         //     let answerTypeSelect = $('#answerTypeSelect').val();
+         //     let isParent = $('#yes').val();
+             
+         //     console.log('cnt: ',(cnt-1));
+         
+         //     // $.ajax({
+         //     //     url: "/admin",
+         //     //     method: "POST",
+         //     //     data: {
+         //     //         email: email,
+         //     //         password: password
+         //     //     },
+         //     //     success: function(resp){
+         //     //         console.log('Response Data: ',resp);
+         //     //         if(resp.status == 'success'){
+         //     //             toastr.success(resp.message);
+         //     //             setTimeout(function(){
+         //     //                 window.location.replace('/admin/dashboard');
+         //     //             },1000);
+         //     //         }
+         //     //         else {
+         //     //             toastr.error(resp.message);
+         //     //         }
+         //     //     }
+         //     // });
+             
+         // });
+      </script>
+   </body>
+</html>

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Profile | {{name}}</title>
+    <link rel="stylesheet" type="text/css" href="css/userprofile.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="js/userprofile.js"></script> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="/css/toastr.css" rel="stylesheet"/>
+
+     <!-- Links -->
+   {% include '../templates/links.njk' %}
+   <!-- Links -->
+  </head>
+  <body>
+   <!-- Navbar -->
+   {% include '../templates/navbar.njk' %}
+   <!-- /.navbar -->
+
+    <section id="breadcrumbs" class="breadcrumbs">
+    </section>
+    <div class="container">
+      <div class="main-body">
+        <!-- Breadcrumb -->
+        <!-- <nav aria-label="breadcrumb" class="main-breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0)">User</a></li>
+            <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+          </ol>
+        </nav> -->
+        <!-- /Breadcrumb -->
+        
+        <div class="row gutters-sm">
+          <div class="col-md-4 mb-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex flex-column align-items-center text-center">
+                  <div class="avatar-upload">
+                    <div class="avatar-edit">
+                      <form name="photo" id="imageUploadForm" enctype="multipart/form-data" action="/uploadPhoto" method="post">
+                        <input type="file" id="myImage" name="myImage" accept=".png, .jpg, .jpeg">
+                        <label for="myImage"></label>
+                      </form>
+                    </div>
+                    <div class="avatar-preview">
+                      <div id="imagePreview" style="background-image: url(profile/{{user.imgsrc}});">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-3">
+                    <h4>{{user.name}}</h4>
+                    <p class="text-secondary mb-1">Username : {{user.username}}</p>
+                    <p class="text-muted font-size-sm">Survey Attended | {{user.surveyAttend}}</p>
+                    <button class="btn btn-primary">Follow</button>
+                    <button class="btn btn-outline-primary">Message</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card mt-3">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                  <h6 class="mb-0" >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram mr-2 icon-inline text-danger">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    Instagram
+                  </h6>
+                  <span class="text-secondary" id="instagram"> <a href="https://www.instagram.com/{{user.instagram}}/" target="_blank">{{user.instagram}}</a></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                  <h6 class="mb-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook mr-2 icon-inline text-primary">
+                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                    </svg>
+                    Facebook
+                  </h6>
+                  <span class="text-secondary" id="facebook"><a href="https://www.facebook.com/{{user.facebook}}/" target="_blank">{{user.facebook}}</a></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                  <h6 class="mb-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter mr-2 icon-inline text-info">
+                      <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                    </svg>
+                    Twitter
+                  </h6>
+                  <span class="text-secondary" id="twitter"><a href="https://twitter.com/{{user.twitter}}/" target="_blank">{{user.twitter}}</a></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                  <h6 class="mb-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github mr-2 icon-inline">
+                      <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                    Github
+                  </h6>
+                  <span class="text-secondary" id="github"><a href="https://github.com/{{user.github}}" target="_blank">{{user.github}}</a></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                  <h6 class="mb-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="2" y1="12" x2="22" y2="12"></line>
+                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                    Website
+                  </h6>
+                  <span class="text-secondary" id="website"><a href="https://www.instagram.com/{{user.instagram}}/" target="_blank">{{user.instagram}}</a></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                  <div id="socialDiv">
+                    <button type="button" class="btn btn-outline-primary btn-sm" id="socialMedia">Add Account</button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">Name</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{user.name}}
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">Username</h6>
+                  </div>
+                  <div id="userNameOnEdit" class="col-sm-9 text-secondary">
+                    {{user.username}}
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">Email-Id</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{user.email}}
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">Password</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    Bay Area, San Francisco, CA
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div id="saveCancelBtn" class="col-sm-12">
+                    <button class="btn btn-primary" id="userEdit">Edit</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row gutters-sm">
+              <div class="card-body">
+                <div class="card mb-3">
+                  <div class="c-card__body">
+                    <ul class="c-list" id="list">
+                      <li class="c-list__item">
+                        <div class="c-list__grid">
+                          <div class="u-text--left u-text--small u-text--medium">Rank</div>
+                          <div class="u-text--left u-text--small u-text--medium">Handsfree Member's</div>
+                          <div class="u-text--right u-text--small u-text--medium">Point's</div>
+                        </div>
+                      </li>
+                      <hr>
+                      <div id="leaderBoardList">
+                      </div>
+                      <li class="c-list__item">
+                        <button type="button" id="showMore" class="btn btn-primary btn-lg btn-block">View Full List</button>
+                      </li>
+                      <hr>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- Scripts -->
+   {% include '../templates/footer.njk' %}
+ <!-- Scripts -->
+
+ <!-- Scripts -->
+   {% include '../templates/scripts.njk' %}
+ <!-- Scripts -->
+
+
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-1b93190375e9ccc259df3a57c1abc0e64599724ae30d7ea4c6877eb615f89387.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/js/toastr.js"></script>
+    <script>
+      // [ Social Media Account Start ]
+      let socialSaveCancel =`
+      <button class="btn btn-primary" id="socialSave">Save</button>
+      <button class="btn btn-primary" id="userCancel">Cancel</button>`;
+      let instagram = `<input type="text" id="instagramin" name="instagram" value="{{user.instagram}}">`;
+      let facebook  = `<input type="text" id="facebookin" name="facebook" value="{{user.facebook}}">`;
+      let github    = `<input type="text" id="githubin" name="github" value="{{user.github}}">`;
+      let twitter   = `<input type="text" id="twitterin" name="twitter" value="{{user.twitter}}">`;
+      let website   = `<input type="text" id="websitein" name="website" value="{{user.website}}">`;
+
+      $("#socialMedia").on("click", ()=>{
+        $("#instagram").html(instagram);
+        $("#facebook").html(facebook);
+        $("#twitter").html(twitter);
+        $("#github").html(github);
+        $("#website").html(website);
+        $("#socialDiv").html(socialSaveCancel);
+
+        $("#socialSave").on("click", ()=>{
+        let instagram = $('#instagramin').val();
+        let facebook  = $('#facebookin').val();
+        let twitter   = $('#twitterin').val();
+        let github    = $('#githubin').val();
+        let website   = $('#websitein').val();
+             $.ajax({
+                 url: "/userprofile/socialMedia",
+                 method: "POST",
+                 data: {
+                     instagram : instagram,
+                     facebook  : facebook,
+                     twitter   : twitter,
+                     github    : github,
+                     website   : website
+                 },
+                 success: function(resp){
+                    console.log('Response Data: ',resp);
+                    if(resp.status == 'success'){
+                        toastr.success(resp.message);
+                        setTimeout(function(){
+                            location.reload();
+                        },1000);
+                    }
+                    else {
+                        toastr.error(resp.message);
+                    }
+                }
+             });
+      })
+      })
+
+
+      // [ Social Media Account End ]
+
+      let currentUsername = '{{user.username}}';
+      let saveCancel =`
+      <button class="btn btn-primary" id="userSave">Save</button>
+      <button class="btn btn-primary" id="userCancel">Cancel</button>`;
+      
+      let nameSection =`
+      <input type="text" id="username" name="username" value="{{user.username}}">
+      <span id="lblMsg2" style="color:green"></span><span id="lblMsg" style=" color:red;"></span>`;
+      
+      // [ Nothing Updated ]
+      $('#userEdit').on('click' , function(){
+        $('#userNameOnEdit').html(nameSection);
+        $('#saveCancelBtn').html(saveCancel);
+      
+        $('#userCancel').on('click' , function(){
+        toastr.error('Nothing Updated');
+        setTimeout(function(){
+        location.reload();   
+        },1000);
+        
+      });
+      
+
+
+        let word = '';
+        let userValidated = false;
+
+        let userValidation = function(){
+          word = document.getElementById("username").value;
+              if (currentUsername != word) {                 
+                // [ AJAX For checking Username Availability ]
+                $.ajax({
+                    url: "/api/userValidation",
+                    method: "POST",
+                    data : {
+                        username : word
+                    },
+                    success: function(resp){
+                    
+                    if(resp.status == 'success'){
+                        userValidated = true;
+                        $('#lblMsg2').html('');
+                        $('#lblMsg').html('');
+                        $('#lblMsg2').html(resp.message);
+                    }
+                    else {
+                        userValidated = false;
+                        $('#lblMsg').html('');
+                        $('#lblMsg2').html('');
+                        $('#lblMsg').html(resp.message);
+                    }
+                }
+                });
+              }else{
+                userValidated = true;
+              }  
+        };
+        
+        // [ On Keypress Event For Username ]
+
+        $("#username").on("paste keypress", function() {
+         
+         let regexprn = new RegExp("^[a-zA-Z0-9_.]+$");
+         let key = String.fromCharCode(event.charCode ? event.which : event.charCode);
+         
+         if (!regexprn.test(key)) {
+                $('#lblMsg2').html('');
+                $('#lblMsg').html('');
+                event.preventDefault();
+                $('#lblMsg').html('Sepecial characters and spaces are not allowed.');
+                return false;
+         }else {
+               $('#lblMsg').html('');
+               $('#lblMsg2').html('');
+               setTimeout(function(){ 
+               word = document.getElementById("username").value;
+               
+               if(word.length >=8){
+               userValidation();
+               }else{
+                $('#lblMsg').html('Username must contain atleast 8 characters!!');
+               }
+               },10);                   
+
+         }
+        });
+
+
+
+      
+        // [ Updating Details ]
+        $('#userSave').on('click' , function(){
+          word = document.getElementById("username").value;
+        if (word.length >= 8) {
+        userValidation();
+
+        setTimeout(function(){
+        if (userValidated) {
+
+        let username = $('#username').val();
+
+             $.ajax({
+                 url: "/userprofile",
+                 method: "POST",
+                 data: {
+                     username: username
+                 },
+                 success: function(resp){
+                    console.log('Response Data: ',resp);
+                    if(resp.status == 'success'){
+                        toastr.success(resp.message);
+                        setTimeout(function(){
+                            location.reload();
+                        },1000);
+                    }
+                    else {
+                        toastr.error(resp.message);
+                    }
+                }
+             });
+         }
+         },500);
+      }else{
+        $('#lblMsg2').html('');
+        $('#lblMsg').html('');
+        $('#lblMsg').html('Username must contain atleast 8 characters!!');
+      }  
+        });
+      
+      
+      });
+      
+    </script>
+    <!--  [ Image Upload Script ] -->
+    <script id="rendered-js">
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          
+          var formData = new FormData(document.getElementById("imageUploadForm"));
+          console.log('formData: ',formData);
+          $.ajax({
+                type:'POST',
+                url: '/uploadPhoto',
+                data:formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                success:function(data){
+                    toastr.success(data.message);
+                         setTimeout(function(){
+                                 location.reload();
+                             },1000);
+                },
+                error: function(data){
+                    toastr.success(data.message);
+                }
+            });
+          
+          reader.onload = function (e) {
+            $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+            $('#imagePreview').hide();
+            $('#imagePreview').fadeIn(650);
+          };
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+      $("#myImage").change(function () {
+        readURL(this);
+      });
+          
+    </script>
+    <!-- [ Leaderbosrd Script ] -->
+    <script>
+      let orderedList =``;
+          let onLoadLeaderboard =``;
+      
+          $("#showMore").click(function () {
+             document.getElementById("showMore").innerHTML = "View Short List";
+              // $("#showMore").val("View Short List");
+              $("#showMore").attr("id", "showLess");
+              $('#leaderBoardList').html(orderedList);
+      
+              $("#showLess").unbind("click").click(function () {
+                console.log('button has been Clicked')
+                location.reload();
+              });
+          });
+      
+      
+      
+      $(document).ready(function(){
+      $.ajax({
+                 url : "/api/frontendLeaderboard",
+                 method : "GET",
+                 success : function(res){
+                   console.log();
+                     let className = '';
+                     let rank = 0;
+                   for(let i =0; i< res.leaderboardData.length ; i++){
+                    // let className = (i == 0) ? '' : () ? : ;
+                      rank = i+1;
+                    if (i==0) {
+                         className = 'u-bg--transparent u-text--dark u-bg--yellow'
+                      }else if(i==1){
+                         className = 'u-bg--transparent u-text--dark u-bg--teal'
+                      }else if (i==2) {
+                         className = 'u-bg--transparent u-text--dark u-bg--orange'
+                      }else{
+                         className = 'u-text--dark u-bg--grey'
+                      }
+      
+                     orderedList +=`
+                     <li class="c-list__item">
+                                   <div class="c-list__grid">
+                                      <div class="c-flag c-place `+className+`">`+rank+`</div>
+                                      <div class="c-media">
+                                         <img class="c-avatar c-media__img" src="profile/`+res.leaderboardData[i].imgsrc+`">
+                                         <div class="c-media__content">
+                                            <div class="c-media__title">`+res.leaderboardData[i].name+`</div>
+                                            <a class="c-media__link u-text--small" href="https://mail.google.com/mail/?view=cm&fs=1&to=`+res.leaderboardData[i].email+`" target="_blank">`+res.leaderboardData[i].username+`</a>
+                                         </div>
+                                      </div>
+                                      <div class="u-text--right c-kudos">
+                                         <div class="u-mt--8">
+                                            <strong>`+res.leaderboardData[i].points+`  </strong><span class="fa fa-star" style="background-color : #ffbf00"></span>
+                                         </div>
+                                      </div>
+                                   </div>
+                                </li>
+                                <hr>`
+                         if (rank == 3) {
+                            onLoadLeaderboard = orderedList;
+                            $('#leaderBoardList').html(onLoadLeaderboard);
+      
+                         }
+                   }
+      
+                 }
+               });
+      });
+    </script>
+  </body>
+</html>
+<!-- <div class="overFlow scrollbar-morpheus-den" id="orderedList">
+  </div> -->

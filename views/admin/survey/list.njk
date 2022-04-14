@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin | {{name}}</title>
+
+  <!-- Link Files Include -->
+      {% include '../templates/link.njk' %}
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+  <!-- Preloader -->
+  <div class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__shake" src="/admin/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+  </div>
+
+  <!-- Navbar -->
+  {% include '../templates/header.njk' %}
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  {% include '../templates/sidemenu.njk' %}
+
+  <div class="content-wrapper" style="min-height: 1302.4px;">
+   <!-- Content Header (Page header) -->
+   <section class="content-header">
+      <div class="container-fluid">
+         <div class="row mb-2">
+            <div class="col-sm-6">
+               <h1>Survey List</h1>
+            </div>
+            <div class="col-sm-6">
+               <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="/admin/survey">Home</a></li>
+                  <li class="breadcrumb-item active">Survey List</li>
+               </ol>
+            </div>
+         </div>
+      </div>
+      <!-- /.container-fluid -->
+   </section>
+   <!-- Main content -->
+   <section class="content">
+      <div class="container-fluid">
+         <div class="row">
+            <div class="col-12">
+               
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">{{name}} :- Survey List's</h3>
+                <button type="button" id="addSurvey" class="btn btn-info float-right">Add Survey</button>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="surveyTable" class="table table-bordered">
+                  <thead>
+                      <tr>
+                          <th>Sr No.</th>
+                          <th>Name</th>
+                          <th>Status</th>
+                          <th>Action</th>
+                      </tr>
+                  </thead>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+
+               <!-- /.card -->
+            </div>
+            <!-- /.col -->
+         </div>
+         <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+   </section>
+   <!-- /.content -->
+</div>
+  {% include '../templates/footer.njk' %}
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- Script Files Include -->
+      {% include '../templates/script.njk' %}
+
+<script>
+$('body').on('click', '#addSurvey', function(){
+  window.location.replace('/admin/survey/addsurvey');    
+});
+//  [ Survey List ]
+$(document).ready( function () {
+
+          $('#surveyTable').DataTable({
+            "ajax": { 
+              url: "/admin/survey/getSurvey",
+              dataSrc:"data"
+            },
+            "oLanguage": {
+              "sSearch": "Search Survey"
+            },
+            "processing": true,
+            "order": [[ 1, "desc" ]],
+            "serverSide": true,
+            "autoWidth": false,
+            "lengthMenu" : [5, 10, 20, 50, 100],
+            "pageLength": 5,
+            "columns": [
+              { "data": function (data, type, row, meta) {
+                          return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+              },
+              { "data": "surveyName" },
+              { "data": "surveyStatus" },
+              {
+                "data": "action",
+                render : function(data, type, row){
+                  return `
+                          <a href="/admin/survey/viewSurvey/`+row._id+`"><button type="button" class="btn btn-warning btn-xs btn-rounded" name="edit"><i class="fa fa-eye" aria-hidden="true"></i></button></a>
+                          <a href="/admin/survey/editSurvey/`+row._id+`"><button type="button" class="btn btn-warning btn-xs btn-rounded" name="edit"><i class="fa fa-edit" aria-hidden="true"></i></button></a> 
+                          <button type="button" name="delete" id="`+row._id+`" class="btn btn-danger btn-xs delete btn-rounded"><i class="fa fa-trash" aria-hidden="true"></i></button>`
+                }
+              }
+            ]
+          });
+        });
+</script>
+
+
+</body>
+</html>

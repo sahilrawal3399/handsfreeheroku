@@ -1,0 +1,615 @@
+ async signupPost(req, res) {
+        try {
+
+            console.log("Req.Body: ", req.body);
+
+            MongoClient.connect(url, function(err, db) {
+                             var dbo = db.db("mydb");
+              dbo.collection("customers").findOne({}, function(err, result) {
+                if (err) throw err;
+               if(result.email==req.body.email){
+                res.send({
+                    "status": 'success',
+                    "message": "You Are Already Part of Family!"
+                });
+               }else{
+                var dbo = db.db("mydb");
+              var myobj = { name: req.body.name, password: req.body.password, email: req.body.email };
+              dbo.collection("customers").insertOne(myobj, function(err, res) {
+                if (err) throw err;
+                console.log("Registered Sucessful");
+                db.close();
+                res.send({
+                    "status": 'success',
+                    "message": "Registered Sucessfully!!"
+                });
+              });
+               }
+              });
+
+            });
+           
+
+        } catch (error) {
+            console.log('Error in Survey Model [ signupPost ]: ', error);
+        }
+    },
+
+
+
+///Login post
+console.log("Req.Body: ", req.body);
+
+            let user = await userSchema.findOne({
+                email: req.body.email,
+                password: req.body.password,
+                role: 'user'
+            });
+
+            if (!user) {
+                console.log('Please Enter Valid Email or Password');
+                res.send({
+                    "status": 'fail',
+                    "message": "Please Enter Valid Email or Password"
+                })
+            } else {
+
+                // [ Store Data in Sesion ]
+                let session = req.session;
+                session.email = req.body.email;
+                session.password = req.body.password;
+                console.log("req.session: ", session);
+
+                res.send({
+                    "status": 'success',
+                    "message": "Login Successful"
+                });
+            }
+
+
+
+
+
+
+
+            // [ Adding Textboxes ]
+             let cnt = 2;
+
+        // [ Answer Type Select ]
+        $('#answerTypeSelect').on('change', function() {
+           
+           let opVal = $(this).val();
+           let html = ``;
+           if(opVal == 'option'){
+             
+             for(let i = 1; i < cnt; i++){
+         
+              html += `<div class="form-group row opCls" id="option_`+i+`">
+                            <div class="col-sm-2">
+                              <input type="text" class="form-control"  placeholder="Enter Title For Option `+i+`">
+                            </div>
+                            <div class="col-sm-2">
+                              <input type="text" class="form-control"  placeholder="Enter Speech For Option `+i+`">
+                            </div>
+                            <button type="button" class="btn btn-info cancelBtn float-right">Cancel</button>
+                          </div>`;
+         
+             }
+            
+            $('#answerTypeOptionHtml').html(html);
+         }
+         else {
+          $('#answerTypeOptionHtml').html("");
+          cnt = 4;
+         }
+        });
+
+        // [ Cancel Button ]
+        $(".cancelBtn").click(function(){
+          console.log('click');
+          $(this).parent('.option_1').remove();
+          cnt = cnt - 1; 
+        });
+
+
+
+
+<img id="myImg" src="">
+<script>
+ async function getFace() {
+   let response = await fetch('https://api.generated.photos/api/v1/faces?per_page=1&gender=female&order_by=random',{
+     method: 'GET',
+     headers: {
+       'Authorization': 'API-Key 9RPzU1GkaCquC0lxcrCNLQ'
+     }
+   });
+   console.info('response: ',response);
+   let result = await response.json();
+   document.getElementById("myImg").src = result.faces[0].urls[4]["512"];
+ }
+ getFace();
+</script>
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Profile | {{name}}</title>
+    <link rel="stylesheet" type="text/css" href="/css/userprofile.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="js/userprofile.js"></script> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="/css/toastr.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <div class="container">
+      <div class="main-body">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="main-breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0)">User</a></li>
+            <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+          </ol>
+        </nav>
+        <!-- /Breadcrumb -->
+        <div class="row gutters-sm">
+          <div class="col-md-4 mb-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex flex-column align-items-center text-center">
+                  <div class="avatar-upload">
+                    <div class="avatar-edit">
+                      <form name="photo" id="imageUploadForm" enctype="multipart/form-data" action="/uploadPhoto" method="post">
+                        <input type="file" id="myImage" name="myImage" accept=".png, .jpg, .jpeg">
+                        <label for="myImage"></label>
+                      </form>
+                    </div>
+                    <div class="avatar-preview">
+                      <div id="imagePreview" style="background-image: url(/profile/{{user.imgsrc}});">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-3">
+                    <h4>{{user.name}}</h4>
+                    <p class="text-secondary mb-1">Username : {{user.username}}</p>
+                    <p class="text-muted font-size-sm">Survey Attended | {{user.surveyattended}}</p>
+                    <button class="btn btn-primary">Follow</button>
+                    <button class="btn btn-outline-primary">Message</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card mt-3">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                  <h6 class="mb-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="2" y1="12" x2="22" y2="12"></line>
+                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                    Website
+                  </h6>
+                  <span class="text-secondary">https://bootdey.com</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                  <h6 class="mb-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github mr-2 icon-inline">
+                      <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                    Github
+                  </h6>
+                  <span class="text-secondary">bootdey</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                  <h6 class="mb-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter mr-2 icon-inline text-info">
+                      <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                    </svg>
+                    Twitter
+                  </h6>
+                  <span class="text-secondary">@bootdey</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                  <h6 class="mb-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram mr-2 icon-inline text-danger">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    Instagram
+                  </h6>
+                  <span class="text-secondary">bootdey</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                  <h6 class="mb-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook mr-2 icon-inline text-primary">
+                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                    </svg>
+                    Facebook
+                  </h6>
+                  <span class="text-secondary">bootdey</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">Name</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{user.name}}
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">Username</h6>
+                  </div>
+                  <div id="userNameOnEdit" class="col-sm-9 text-secondary">
+                    {{user.username}}
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">Email-Id</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{user.email}}
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">Password</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    Bay Area, San Francisco, CA
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div id="saveCancelBtn" class="col-sm-12">
+                    <button class="btn btn-primary" id="userEdit">Edit</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-1b93190375e9ccc259df3a57c1abc0e64599724ae30d7ea4c6877eb615f89387.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/js/toastr.js"></script>
+    <script>
+      let saveCancel =`
+      <button class="btn btn-primary" id="userSave">Save</button>
+      <button class="btn btn-primary" id="userCancel">Cancel</button>`;
+      
+      let nameSection =`
+      <input type="text" id="username" name="username" value="{{user.username}}">
+      <span id="lblMsg2" style="color:green"></span><span id="lblMsg" style=" color:red;"></span>`;
+      
+      // [ Nothing Updated ]
+      $('#userEdit').on('click' , function(){
+        $('#userNameOnEdit').html(nameSection);
+        $('#saveCancelBtn').html(saveCancel);
+      
+        $('#userCancel').on('click' , function(){
+        toastr.error('Nothing Updated');
+        setTimeout(function(){
+        location.reload();   
+        },1000);
+        
+      });
+      
+
+
+        let word = '';
+        let userValidated = false;
+
+        let userValidation = function(){
+          word = document.getElementById("username").value;
+                               
+                // [ AJAX For checking Username Availability ]
+                $.ajax({
+                    url: "/api/userValidation",
+                    method: "POST",
+                    data : {
+                        username : word
+                    },
+                    success: function(resp){
+                    
+                    if(resp.status == 'success'){
+                        userValidated = true;
+                        $('#lblMsg2').html('');
+                        $('#lblMsg').html('');
+                        $('#lblMsg2').html(resp.message);
+                    }
+                    else {
+                        userValidated = false;
+                        $('#lblMsg').html('');
+                        $('#lblMsg2').html('');
+                        $('#lblMsg').html(resp.message);
+                    }
+                }
+                });  
+        };
+        
+        // [ On Keypress Event For Username ]
+
+        $("#username").on("paste keypress", function() {
+         
+         let regexprn = new RegExp("^[a-zA-Z0-9_.]+$");
+         let key = String.fromCharCode(event.charCode ? event.which : event.charCode);
+         
+         if (!regexprn.test(key)) {
+                $('#lblMsg2').html('');
+                $('#lblMsg').html('');
+                event.preventDefault();
+                $('#lblMsg').html('Sepecial characters and spaces are not allowed.');
+                return false;
+         }else {
+               $('#lblMsg').html('');
+               $('#lblMsg2').html('');
+               setTimeout(function(){ 
+               word = document.getElementById("username").value;
+               
+               if(word.length >=8){
+               userValidation();
+               }else{
+                $('#lblMsg').html('Username must contain atleast 8 characters!!');
+               }
+               },10);                   
+
+         }
+        });
+
+
+
+      
+        // [ Updating Details ]
+        $('#userSave').on('click' , function(){
+          word = document.getElementById("username").value;
+        if (word.length >= 8) {
+        userValidation();
+
+        setTimeout(function(){
+        if (userValidated) {
+
+        let username = $('#username').val();
+
+             $.ajax({
+                 url: "/userprofile",
+                 method: "POST",
+                 data: {
+                     username: username
+                 },
+                 success: function(resp){
+                    console.log('Response Data: ',resp);
+                    if(resp.status == 'success'){
+                        toastr.success(resp.message);
+                        setTimeout(function(){
+                            location.reload();
+                        },1000);
+                    }
+                    else {
+                        toastr.error(resp.message);
+                    }
+                }
+             });
+         }
+         },500);
+      }else{
+        $('#lblMsg2').html('');
+        $('#lblMsg').html('');
+        $('#lblMsg').html('Username must contain atleast 8 characters!!');
+      }  
+        });
+      
+      
+      });
+      
+    </script>
+    <!--  [ Image Upload Script ] -->
+    <script id="rendered-js">
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          
+          var formData = new FormData(document.getElementById("imageUploadForm"));
+          console.log('formData: ',formData);
+          $.ajax({
+                type:'POST',
+                url: '/uploadPhoto',
+                data:formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                success:function(data){
+                    toastr.success(data.message);
+                         setTimeout(function(){
+                                 location.reload();
+                             },1000);
+                },
+                error: function(data){
+                    toastr.success(data.message);
+                }
+            });
+          
+          reader.onload = function (e) {
+            $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+            $('#imagePreview').hide();
+            $('#imagePreview').fadeIn(650);
+          };
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+      $("#myImage").change(function () {
+        readURL(this);
+      });
+          
+    </script>
+    
+  </body>
+</html>
+<!-- <div class="overFlow scrollbar-morpheus-den" id="orderedList">
+  </div> -->
+
+
+
+
+
+
+  <div class="buttoncenter">
+     <button id='play' data-v-4d55ab51="" class="form-button primary ab-small ab-pill ab-basic-a" title="Start the SURVEY"> <span data-v-4d55ab51="" class="internal">Start Survey &#10148;</span></button>
+                                <br><br><button id='hide_div' data-v-4d55ab51="" class="form-button primary ab-small ab-pill ab-basic-a hide" title="Use this to REPEAT the question Or when our A.I.missed your answer"  > <span data-v-4d55ab51="" class="internal">Repeat 🔁</span></button>
+   </div>
+    <footer class="footer">
+        <div class="info">
+        <p><strong>INFO!</strong><marquee behavior="" direction=""> Remember that if you want to skip any question say <strong>"SKIP"</strong></marquee> </p>   
+        </div>
+        <div class="warn">
+                      <p>
+                        <strong>WARNING!!</strong>
+                        <marquee behavior="" direction=""> If the answer of the question is 
+                            <strong>"YES"</strong> say 
+                            <strong>"I do"</strong> And if the answer is 
+                            <strong>"NO"</strong> say 
+                            <strong>"SKIP" PLEASE</strong> follow this instruction otherwise the 
+                            <strong>SURVEY</strong>may stuck! 
+                            <strong>Only</strong> say YES And NO While 
+                            <strong>Confirmation Message!!</strong>
+                        </marquee>  
+                    </p>  
+        </div> 
+        
+    </footer>
+
+
+
+
+
+    console.log(req.query);
+      
+    let responseData = '';
+    let queSurveyId = mongoose.Types.ObjectId(req.query.id);
+
+    console.log('survey Id ',queSurveyId)
+
+    
+    await MongoClient.connect(url, function (err, db) {
+      let dbo = db.db("mydb");
+
+      if (req.query.parentId != '' && req.query.parentId != "undefined" ) {
+        let parentId = mongoose.Types.ObjectId(req.query.parentId);
+
+        let parentFetching = function(){
+         dbo.collection("questions").find({surveyId : queSurveyId,parentQueId : parentId}).toArray(function (err, result) {
+          if (err) throw err;
+          responseData = result;
+          db.close();
+
+          if (responseData.length > 0) {
+            res.send({
+            "status" : "success",
+            "statuscode" : 200,
+            "message" : "Questions Fetched Sucessfully",
+            "surveyId" : queSurveyId,
+
+            "responseData" : responseData
+            });
+          }else{
+            console.log('Default in Parent  ');
+            defaultMsg();
+          }
+        });
+      }
+
+      if (req.query.optionVal != '' && req.query.optionVal != "undefined" ) {
+        let optionVal = req.query.optionVal;
+        dbo.collection("questions").find({surveyId : queSurveyId,parentQueId : parentId, parentOption : optionVal}).toArray(function (err, result) {
+        if (err) throw err;
+        responseData = result;
+        
+
+        if (responseData.length > 0) {
+          db.close();
+          res.send({
+          "status" : "success",
+          "statuscode" : 200,
+          "message" : "Questions Fetched Sucessfully",
+          "surveyId" : queSurveyId,
+
+          "responseData" : responseData
+          });
+          }else{
+            parentFetching();
+          }
+      });
+
+      }else{
+       parentFetching();
+      }
+
+      }else if (req.query.firstQue == 'true') {
+        
+      dbo.collection("questions").find({surveyId : queSurveyId}).sort({ queOrder : 1 }).toArray(function (err, result) {
+        if (err) throw err;
+        responseData = result;
+        db.close();
+        if (responseData.length > 0) {
+          res.send({
+          "status" : "success",
+          "statuscode" : 200,
+          "message" : "Questions Fetched Sucessfully",
+          "surveyId" : queSurveyId,
+          "responseData" : responseData
+          });
+        }else{
+          res.send({
+          "status" : "success",
+          "statuscode" : 404,
+          "message" : "Questions Fetched Sucessfully",
+          "surveyId" : queSurveyId,
+         "responseData" : "Sorry This Survey Is Not Available.."
+          });
+        }
+      });
+
+      }else{
+        console.log('Default in The end ');
+        defaultMsg();
+      }
+
+      // [ Function For Sending Default Message ]
+      let defaultMsg = function(){
+          res.send({
+          "status" : "success",
+          "statuscode" : 204, /* 204 Indicates That There Is No Content Found */
+          "message" : "Questions Fetched Sucessfully",
+          "surveyId" : queSurveyId,
+          "responseData" : "Thank You For Attending The Survey.."
+          });
+      }
+       
+      
+    });     

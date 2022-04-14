@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Admin | {{name}}</title>
+      <link href="/css/toastr.css" rel="stylesheet"/>
+
+      <!-- Link Files Include -->
+      {% include '../templates/link.njk' %}
+
+      <style type="text/css">
+         .avatar-edit {
+         position: absolute;
+         right: 12px;
+         z-index: 1;
+         top: 10px;
+         }
+         .avatar-edit input {
+         display: none;
+         }
+         .avatar-edit input + label {
+         display: inline-block;
+         width: 34px;
+         height: 34px;
+         margin-bottom: 0;
+         border-radius: 100%;
+         background: #FFFFFF;
+         border: 1px solid transparent;
+         box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+         cursor: pointer;
+         font-weight: normal;
+         transition: all 0.2s ease-in-out;
+         }
+         .avatar-edit input + label:hover {
+         background: #f1f1f1;
+         border-color: #d6d6d6;
+         }
+         .avatar-edit input + label:after {
+         content: "\f040";
+         font-family: 'FontAwesome';
+         color: #757575;
+         position: absolute;
+         top: 10px;
+         left: 0;
+         right: 0;
+         text-align: center;
+         margin: auto;
+         }
+      </style>
+   </head>
+   <body class="hold-transition sidebar-mini layout-fixed">
+      <div class="wrapper">
+         <!-- Preloader -->
+         <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="/admin/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+         </div>
+         <!-- Navbar -->
+         {% include '../templates/header.njk' %}
+         <!-- /.navbar -->
+         <!-- Main Sidebar Container -->
+         {% include '../templates/sidemenu.njk' %}
+         <!-- leaderboard start -->
+         <div class="content-wrapper" style="min-height: 1302.4px;">
+            <div class="col-sm-6">
+               <h1>Profile</h1>
+            </div>
+            <div class="container-fluid">
+               <div class="row">
+                  <div class="col-md-3">
+                     <!-- Profile Image -->
+                     <div class="card card-primary card-outline ">
+                        <div class="card-body box-profile mainprofile">
+                           <div class="text-center ">
+                              <img class="profile-user-img img-fluid img-circle" src="../images/admin.jpg" alt="User profile picture">
+                              <div class="avatar-edit profileImg">
+                                <form name="photo" id="imageUploadForm" enctype="multipart/form-data" action="/admin/profile" method="post">
+         
+                             <input type="file" id="myImage" name="myImage" accept=".png, .jpg, .jpeg">
+                             <label for="myImage"></label>
+                                </form>
+                              </div>
+                           </div>
+                           <p class="text-muted text-center">Admin</p>
+                           <ul class="list-group list-group-unbordered mb-3">
+                              <li class="list-group-item" id="adminProfile">
+                                 <input type="text" id="username" name="username" value="{{user.name}}" disabled>
+                              </li>
+                              <li class="list-group-item">
+                                 <b>Followers</b> <a class="float-right">1,322</a>
+                              </li>
+                              <li class="list-group-item">
+                                 <b>Following</b> <a class="float-right">543</a>
+                              </li>
+                              <li class="list-group-item">
+                                 <b>Friends</b> <a class="float-right">13,287</a>
+                              </li>
+                              <li class="list-group-item" id="edit_btn">
+                                 <a href="#" class="btn btn-primary btn-block" id="profile"><b>Edit Profile</b></a>
+                              </li>
+                           </ul>
+                        </div>
+                        <!-- /.card-body -->
+                       
+                     </div>
+                     <!-- /.card -->
+                     <!-- About Me Box -->
+                     <div class="card card-primary">
+                        <div class="card-header">
+                           <h3 class="card-title">About Me</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                           <strong><i class="fas fa-book mr-1"></i> Education</strong>
+                           <p class="text-muted">Bachelor Of Science in Information Technology from the University of Mumbai J.V.M Mehta Degree College.
+                           </p>
+                           <hr>
+                           <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
+                           <p class="text-muted">Mumbai, Maharashtra</p>
+                           <hr>
+                           <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
+                           <p class="text-muted">
+                              <span class="tag tag-success">Coding</span>
+                              <span class="tag tag-info">Javascript</span>
+                              <span class="tag tag-primary">Node.js</span>
+                           </p>
+                           <hr>
+                           <!-- <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
+                              <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p> -->
+                        </div>
+                        <!-- /.card-body -->
+                     </div>
+                     <!-- /.card -->
+                  </div>
+                  <!-- Recover Password -->
+                  <div class="col-md-9">
+                     <div class="login-box">
+                        <div class="login-logo">
+                           <a href="../../index2.html"><b>Admin</b>LTE</a>
+                        </div>
+                        <!-- /.login-logo -->
+                        <div class="card">
+                           <div class="card-body login-card-body">
+                              <p class="login-box-msg">You are only one step a way from your new password, recover your password now.</p>
+                              <form action="login.html" method="post">
+                                 <div class="input-group mb-3">
+                                    <input type="password" class="form-control" placeholder="Password">
+                                    <div class="input-group-append">
+                                       <div class="input-group-text">
+                                          <span class="fas fa-lock"></span>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="input-group mb-3">
+                                    <input type="password" class="form-control" placeholder="Confirm Password">
+                                    <div class="input-group-append">
+                                       <div class="input-group-text">
+                                          <span class="fas fa-lock"></span>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-12">
+                                       <button type="submit" class="btn btn-primary btn-block">Change password</button>
+                                    </div>
+                                    <!-- /.col -->
+                                 </div>
+                              </form>
+                              <p class="mt-3 mb-1">
+                                 <a href="/admin">Login</a>
+                              </p>
+                           </div>
+                           <!-- /.login-card-body -->
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- leaderboard ends -->
+         {% include '../templates/footer.njk' %}
+         <!-- Control Sidebar -->
+         <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+         </aside>
+         <!-- /.control-sidebar -->
+      </div>
+      <!-- ./wrapper -->
+      
+       <!-- Script Files Include -->
+      {% include '../templates/script.njk' %}
+      <script src="/js/toastr.js"></script>
+
+      <script>
+         $('#profile').on('click', function() {
+          console.log('Edit Profile Button Clicked..')
+          $('#adminProfile').html("");
+          $('#edit_btn').html("");
+          
+          let saveBtn = ``;
+         let html = ``;
+           html = `<input type="text" id="username" name="username" value="{{user.name}}">`;
+                 $('#adminProfile').html(html);
+           saveBtn = `<a href="#" class="btn btn-primary btn-block" id="save"><b>Save</b></a>`;
+                $('#edit_btn').html(saveBtn);
+           
+         });
+      </script>
+      <script id="rendered-js">
+         function readURL(input) {
+           if (input.files && input.files[0]) {
+             var reader = new FileReader();
+             
+             var formData = new FormData(document.getElementById("imageUploadForm"));
+             console.log('formData: ',formData);
+             $.ajax({
+                   type:'POST',
+                   url: '/admin/profile',
+                   data:formData,
+                   cache:false,
+                   contentType: false,
+                   processData: false,
+                   success:function(data){
+                       console.log("success");
+                       console.log('Data',data);
+                   },
+                   error: function(data){
+                       console.log("error");
+                       console.log(data);
+                   }
+               });
+             
+             reader.onload = function (e) {
+               $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+               $('#imagePreview').hide();
+               $('#imagePreview').fadeIn(650);
+             };
+             reader.readAsDataURL(input.files[0]);
+           }
+         }
+         $("#myImage").change(function () {
+           console.log('task')
+           readURL(this);
+         });
+             
+      </script>
+      <script>
+         $('body').on('click', '#save', function(){
+              
+              let name = $('#username').val();
+              console.log("name",name);
+              $.ajax({
+                  url: "/admin/profile",
+                  method: "POST",
+                  data: {
+                      name: name
+                  },
+                  success: function(resp){
+                     console.log('Response Data: ',resp);
+                     if(resp.status == 'success'){
+                         toastr.success(resp.message);
+                         setTimeout(function(){
+                             window.location.replace('/admin/profile');
+                         },1000);
+                     }
+                     else {
+                         toastr.error(resp.message);
+                     }
+                 }
+              });
+              
+          });
+      </script>
+   </body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Home | {{name}}</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+  <link rel="stylesheet" type="text/css" href="/css/homepage.css">
+
+   <!-- Links -->
+   {% include '../templates/links.njk' %}
+   <!-- Links -->
+
+  <!-- =======================================================
+  * Template Name: Arsha - v4.3.0
+  * Template URL: https://bootstrapmade.com/arsha-free-bootstrap-html-template-corporate/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+         <!-- Navbar -->
+         {% include '../templates/navbar.njk' %}
+         <!-- /.navbar -->
+
+  <!-- ======= Welcome Section ======= -->
+  <section class="d-flex align-items-center">
+
+    <div class="container">
+      <div class="row">
+         <div class="col-lg-5 hero-img" data-aos="zoom-in" data-aos-delay="200">
+          <img src="/images/robot2.gif" class="img-fluid" alt="">
+        </div>
+        <div class="col-lg-7 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200" style="margin-top: 100px">
+         <blockquote class="blockquote text-center">
+            <h3 class="typingeffect"  id="typingeffect0">Hello {{user.name}} ,</h3>
+          <h2>Welcome,to Handsfree Survey System.</h2>
+           <p class="lead fadeinEffect" id="typingeffect1"> </p>
+          &nbsp;
+            <footer class="blockquote-footer"><cite title="Source Title">Handsfree Team.</cite></footer>
+          </blockquote>
+        </div>
+        
+      </div>
+    </div>
+
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+    <!-- ======= Services Section ======= -->
+    <section id="services" class="services section-bg">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>Survey's</h2>
+        </div>
+
+        <div class="row">
+          {% for survey in totalSurvey %}
+
+          <div class="col-xl-3 col-md-6 d-flex align-items-stretch tp" data-aos="zoom-in" data-aos-delay="100">
+            <div class="icon-box">
+              <div class="icon"><i class="bx bx-file"></i></div>
+              <h4><a href="/survey/{{survey._id}}">{{survey.surveyName}} Survey</a></h4>
+              <p>{{survey.description}}</p>
+            </div>
+          </div>
+          {% endfor %} 
+        </div>
+
+      </div>
+    </section><!-- End Services Section -->
+
+ <!-- ======= Cliens Section ======= -->
+    <section id="cliens" class="cliens section-bg">
+      <div class="container">
+
+        <div class="row" data-aos="zoom-in">
+          <div class="section-title">
+            <h2>Sponsor's</h2>
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+            <img src="/homepage/img/clients/client-1.png" class="img-fluid" alt="">
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+            <img src="/homepage/img/clients/client-2.png" class="img-fluid" alt="">
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+            <img src="/homepage/img/clients/client-3.png" class="img-fluid" alt="">
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+            <img src="/homepage/img/clients/client-4.png" class="img-fluid" alt="">
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+            <img src="/homepage/img/clients/client-5.png" class="img-fluid" alt="">
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+            <img src="/homepage/img/clients/client-6.png" class="img-fluid" alt="">
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Cliens Section -->
+
+        <!-- ======= Team Section ======= -->
+    <section id="team" class="team section-bg">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>Team</h2>
+
+        <div class="row">
+
+          <div class="col-lg-6">
+            <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="100">
+              <div class="pic"><img src="/homepage/img/team/HR_Handsfree_Team.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Himanshu Raval</h4>
+                <span>Founder</span>
+                <p>"In order to be irreplaceable, one must always be different."</p>
+                <div class="social">
+                  <a href=""><i class="ri-twitter-fill"></i></a>
+                  <a href=""><i class="ri-facebook-fill"></i></a>
+                  <a href=""><i class="ri-instagram-fill"></i></a>
+                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mt-4 mt-lg-0">
+            <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="200">
+              <div class="pic"><img src="/homepage/img/team/DR_Handsfree_Team.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Darshan Raval</h4>
+                <span>Co.Founder | Developer</span>
+                <p>"Make it work, make it right, make it fast."</p>
+                <div class="social">
+                  <a href=""><i class="ri-twitter-fill"></i></a>
+                  <a href=""><i class="ri-facebook-fill"></i></a>
+                  <a href=""><i class="ri-instagram-fill"></i></a>
+                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mt-4">
+            <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="300">
+              <div class="pic"><img src="/homepage/img/team/SR_Handsfree_Team.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Sahil Rawal</h4>
+                <span>Developer</span>
+                <p>"Experience is the name everyone gives to their mistakes."</p>
+                <div class="social">
+                  <a href=""><i class="ri-twitter-fill"></i></a>
+                  <a href=""><i class="ri-facebook-fill"></i></a>
+                  <a href=""><i class="ri-instagram-fill"></i></a>
+                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mt-4">
+            <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="400">
+              <div class="pic"><img src="/homepage/img/team/team-4.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Amanda Jepson</h4>
+                <span>Accountant</span>
+                <p>Dolorum tempora officiis odit laborum officiis et et accusamus</p>
+                <div class="social">
+                  <a href=""><i class="ri-twitter-fill"></i></a>
+                  <a href=""><i class="ri-facebook-fill"></i></a>
+                  <a href=""><i class="ri-instagram-fill"></i></a>
+                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Team Section -->
+
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>Contact</h2>
+        </div>
+
+        <div class="row">
+
+          <div class="col-lg-5 d-flex align-items-stretch">
+            <div class="info">
+              <div class="address">
+                <i class="bi bi-geo-alt"></i>
+                <h4>Location:</h4>
+                <p>Sector-1 Ghansoli, Navi Mumbai 400701</p>
+              </div>
+
+              <div class="email">
+                <i class="bi bi-envelope"></i>
+                <h4>Email:</h4>
+                <p>handsfreesurvey@gmail.com</p>
+              </div>
+
+              <div class="phone">
+                <i class="bi bi-phone"></i>
+                <h4>Call:</h4>
+                <p>+91 8104783939</p>
+              </div>
+
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d942.473772672872!2d73.00288713464896!3d19.112257741668113!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c1fb7af04869%3A0xa1d6457f59fe1bd1!2sSector%201%20NMMC%20Garden!5e0!3m2!1sen!2sin!4v1649866470434!5m2!1sen!2sin" frameborder="0" style="border:0; width: 100%; height: 290px;" allowfullscreen></iframe>
+            </div>
+
+          </div>
+
+          <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
+            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="name">Your Name</label>
+                  <input type="text" name="name" class="form-control" id="name" required>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="name">Your Email</label>
+                  <input type="email" class="form-control" name="email" id="email" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="name">Subject</label>
+                <input type="text" class="form-control" name="subject" id="subject" required>
+              </div>
+              <div class="form-group">
+                <label for="name">Message</label>
+                <textarea class="form-control" name="message" rows="10" required></textarea>
+              </div>
+              <div class="my-3">
+                <div class="loading">Loading</div>
+                <div class="error-message"></div>
+                <div class="sent-message">Your message has been sent. Thank you!</div>
+              </div>
+              <div class="text-center"><button type="submit">Send Message</button></div>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Contact Section -->
+
+  </main><!-- End #main -->
+
+<!-- Footer -->
+   {% include '../templates/footer.njk' %}
+ <!-- Footer -->
+
+ <!-- Scripts -->
+   {% include '../templates/scripts.njk' %}
+ <!-- Scripts -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script>
+    let datas =["Hello {{user.name}} , Welcome,to Handsfree Survey System.","This is a handsfree survey system built with a ai system "]        
+               
+                setTimeout(function(){
+                  $("#typingeffect1").html(datas[1]);
+                  $(".fadeinEffect").fadeIn(2000);
+                }, 5000);
+
+                for(let key in datas){
+                  onLoadSpeech(datas[key]);
+                }
+           
+           function onLoadSpeech(txt){
+             let speech = new SpeechSynthesisUtterance();
+                   speech.lang = "en-GB";
+                   speech.text = txt;
+                   speech.volume = 100;
+                   speech.rate = 1;
+                   speech.pitch = 1;
+                   window.speechSynthesis.speak(speech);
+           }
+
+  // [ Log Out Section ]
+          $('body').on('click', '#logOut', function(){
+            console.log("Button Clicked")
+            $.ajax({
+                url: "/logout",
+                method: "GET",
+                success: function(resp){
+                        // toastr.success("Log Out Successfully");
+                        setTimeout(function(){
+                            window.location.replace('/');
+                        },1000);
+                   
+                }
+            });
+            
+          });
+  </script>
+</body>
+
+</html>
